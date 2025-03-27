@@ -1,0 +1,5 @@
+mesa
+pygame
+tkinter
+numpy
+faker
