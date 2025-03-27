@@ -1,7 +1,7 @@
 # src/simulation.py
 import simpy
 from mesa import Model
-from crew import CrewAgent
+from src.crew import CrewAgent
 
 class StarshipSimulation(Model):
     def __init__(self, crew_data, ship_layout):

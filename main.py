@@ -1,8 +1,8 @@
 # main.py
-from simulation import StarshipSimulation
-from interface import StarshipInterface
-from ship import Starship
-from tasks import TaskManager
+from src.simulation import StarshipSimulation
+from src.interface import StarshipInterface
+from src.ship import Starship
+from src.tasks import TaskManager
 import json
 
 def load_config(file_path):
