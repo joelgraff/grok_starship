@@ -1,38 +1,19 @@
 # main.py
+from simulation import StarshipSimulation
+from interface import StarshipInterface
+from ship import Starship
+from tasks import TaskManager
+import json
 
-import threading
-from models import StarshipModel, ShipModel
-from visuals import ShipWindow
-from terminals import (CaptainWindow, NavigatorWindow, EngineerWindow,
-                      CommunicatorWindow, ScientistWindow)
-
-def main():
-    starship = StarshipModel()
-    ship_model = ShipModel(starship)
-
-    # Start ship interior in a thread
-    ship_window = ShipWindow(ship_model)
-    ship_thread = threading.Thread(target=ship_window.run)
-    ship_thread.daemon = True
-    ship_thread.start()
-
-    # Start all five station windows in threads
-    windows = [
-        CaptainWindow(starship, ship_model),
-        NavigatorWindow(starship, ship_model),
-        EngineerWindow(starship, ship_model),
-        CommunicatorWindow(starship, ship_model),
-        ScientistWindow(starship, ship_model),
-    ]
-    threads = []
-    for window in windows[:-1]:
-        t = threading.Thread(target=window.run)
-        t.daemon = True
-        t.start()
-        threads.append(t)
-
-    # Run Scientist in main thread
-    windows[-1].run()
+def load_config(file_path):
+    with open(file_path, "r") as f:
+        return json.load(f)
 
 if __name__ == "__main__":
-    main()
+    crew_data = load_config("config/crew_data.json")
+    ship_layout = load_config("config/ship_layout.json")
+    ship = Starship(ship_layout)
+    sim = StarshipSimulation(crew_data, ship_layout)
+    sim.task_manager = TaskManager(ship)  # Add task manager to simulation
+    interface = StarshipInterface(sim)
+    interface.run()
