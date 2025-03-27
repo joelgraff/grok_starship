@@ -1,17 +1,18 @@
+# src/crew.py
 from mesa import Agent
 from src.tasks import TaskType
 import random
 
 class CrewAgent(Agent):
     def __init__(self, unique_id, model, data):
-        super().__init__(unique_id)
+        super().__init__(unique_id)  # Only pass unique_id to mesa.Agent
         self.model = model
         self.name = data["name"]
         self.age = data["age"]
         self.role = data["role"]
         self.health = data["health"]
         self.mood = data["mood"]
-        self.position = (1, 0, 0)  # Start on Bridge Deck
+        self.position = (1, 0, 0)    # Start on Bridge Deck
         self.task = None
         self.performance = 100
 
