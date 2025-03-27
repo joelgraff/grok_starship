@@ -1,8 +1,10 @@
+# main.py
 from src.simulation import StarshipSimulation
 from src.interface import StarshipInterface
 from src.ship import Starship
 import json
 import os
+import traceback
 
 def load_config(file_path):
     if not os.path.exists(file_path):
@@ -20,3 +22,4 @@ if __name__ == "__main__":
         interface.run()
     except Exception as e:
         print(f"Error: {e}")
+        traceback.print_exc()  # Print full stack trace for debugging
