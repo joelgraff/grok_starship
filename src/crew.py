@@ -4,7 +4,8 @@ import random
 
 class CrewAgent(Agent):
     def __init__(self, unique_id, model, data):
-        super().__init__(unique_id, model)
+        super().__init__(unique_id)
+        self.model = model
         self.name = data["name"]
         self.age = data["age"]
         self.role = data["role"]
