@@ -1,6 +1,5 @@
-# src/crew.py
 from mesa import Agent
-from src.tasks import TaskType
+from tasks import TaskType
 import random
 
 class CrewAgent(Agent):
@@ -9,11 +8,11 @@ class CrewAgent(Agent):
         self.name = data["name"]
         self.age = data["age"]
         self.role = data["role"]
-        self.health = data["health"]  # 0-100
-        self.mood = data["mood"]      # 0-100 (higher is better)
-        self.position = (1, 0, 0)     # (deck, x, y)
+        self.health = data["health"]
+        self.mood = data["mood"]
+        self.position = (1, 0, 0)  # Start on Bridge Deck
         self.task = None
-        self.performance = 100        # Base performance
+        self.performance = 100
 
     def step(self):
         if not self.task:
@@ -24,11 +23,10 @@ class CrewAgent(Agent):
 
     def move_toward_task(self):
         if self.task and self.position != self.task.location:
-            # Simplified movement (expand with pathfinding later)
             curr_deck, curr_x, curr_y = self.position
             targ_deck, targ_x, targ_y = self.task.location
             if curr_deck != targ_deck:
-                self.position = (targ_deck, curr_x, curr_y)  # Turbolift
+                self.position = (targ_deck, curr_x, curr_y)
             elif curr_x < targ_x:
                 self.position = (curr_deck, curr_x + 1, curr_y)
             elif curr_x > targ_x:
@@ -39,7 +37,6 @@ class CrewAgent(Agent):
                 self.position = (curr_deck, curr_x, curr_y - 1)
 
     def update_status(self):
-        # Performance and mood degrade/improve
         if self.task and self.task.priority > 5:
             self.mood -= 2
             self.health -= 1 if random.random() < 0.1 else 0

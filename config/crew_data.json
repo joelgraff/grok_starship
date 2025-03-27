@@ -1,16 +1,4 @@
 [
-    {
-        "name": "Alice Carter",
-        "age": 34,
-        "role": "Engineer",
-        "health": 85,
-        "mood": "happy"
-    },
-    {
-        "name": "Bob Nguyen",
-        "age": 29,
-        "role": "Navigator",
-        "health": 90,
-        "mood": "calm"
-    }
+    {"name": "Alice Carter", "age": 34, "role": "Engineer", "health": 85, "mood": 75},
+    {"name": "Bob Nguyen", "age": 29, "role": "Navigator", "health": 90, "mood": 80}
 ]
