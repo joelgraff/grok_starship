@@ -5,8 +5,7 @@ import random
 
 class CrewAgent(Agent):
     def __init__(self, unique_id, model, data):
-        super().__init__(unique_id)  # Only pass unique_id to mesa.Agent
-        self.model = model
+        super().__init__(unique_id, model)  # Pass both unique_id and model to mesa.Agent
         self.name = data["name"]
         self.age = data["age"]
         self.role = data["role"]
