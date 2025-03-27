@@ -1,5 +1,5 @@
 import tkinter as tk
-from simulation import StarshipSimulation
+from src.simulation import StarshipSimulation
 
 class StarshipInterface:
     def __init__(self, simulation):

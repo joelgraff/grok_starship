@@ -1,5 +1,5 @@
 from mesa import Agent
-from tasks import TaskType
+from src.tasks import TaskType
 import random
 
 class CrewAgent(Agent):

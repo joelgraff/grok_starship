@@ -1,7 +1,7 @@
 import simpy
 from mesa import Model
-from crew import CrewAgent
-from tasks import TaskManager
+from src.crew import CrewAgent
+from src.tasks import TaskManager
 
 class StarshipSimulation(Model):
     def __init__(self, crew_data, ship_layout):
