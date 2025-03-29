@@ -21,8 +21,7 @@ class StarshipSimulation(Model):
         self.crew = self.agents  # Store agents for easy access
 
     def step(self):
-        """Advance the simulation by one step."""
-        self.agents.shuffle_do("step")
-        #self.schedule.step()  # Let Mesa handle agent steps
+    """Advance the simulation by one step."""
+        self.agents.shuffle_do("step")  # This will skip dead agents after removal
         self.task_manager.update()
-        self.env.run(until=self.env.now + 1)  # Simulate one time unit
+        self.env.run(until=self.env.now + 1)

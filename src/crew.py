@@ -5,7 +5,14 @@ import random
 
 class CrewAgent(Agent):
     def __init__(self, unique_id, model, data):
-        super().__init__(unique_id, model)  # Pass both unique_id and model to mesa.Agent
+        print(f"Initializing CrewAgent with unique_id={unique_id}, model={model}")
+        self.unique_id=unique_id
+        self.model = model
+        
+        if self.model is not None:
+            self.model.register_agent(self)
+
+        self.name = data["name"]
         self.name = data["name"]
         self.age = data["age"]
         self.role = data["role"]
@@ -14,6 +21,7 @@ class CrewAgent(Agent):
         self.position = (1, 0, 0)    # Start on Bridge Deck
         self.task = None
         self.performance = 100
+        print(f"After Agent.__init__, self.model={self.model}")
 
     def step(self):
         if not self.task:
@@ -37,11 +45,19 @@ class CrewAgent(Agent):
             elif curr_y > targ_y:
                 self.position = (curr_deck, curr_x, curr_y - 1)
 
+# src/crew.py (partial)
     def update_status(self):
-        if self.task and self.task.priority > 5:
-            self.mood -= 2
-            self.health -= 1 if random.random() < 0.1 else 0
-        else:
-            self.mood += 1
+        if self.health > 0:  # Only update if alive
+            if self.task and self.task.priority > 5:
+                self.mood -= 2
+                self.health -= 1 if random.random() < 0.1 else 0
+            else:
+                self.mood += 1
         self.mood = max(0, min(100, self.mood))
+        self.health = max(0, min(100, self.health))
         self.performance = min(100, self.health + self.mood // 2)
+
+        if self.health == 0:
+            self.task = None
+            print(f"{self.name} has died (Health = 0)")
+            self.model.agents.remove(self)  # Remove from simulation
