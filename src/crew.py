@@ -32,11 +32,12 @@ class CrewAgent(Agent):
         logger.info(f"Crew {self.name} initialized at {self.position} with Health={self.health}, Mood={self.mood}")
 
     def step(self):
-        if self.health > 0:  # Only act if alive
+        if self.health > 0:
             if not self.task:
-                self.task = self.model.task_manager.generate_random_event()
-                self.task.assign(self)
-                logger.info(f"{self.name} assigned task: {self.task.name} at {self.task.location}")
+                self.task = self.model.task_manager.generate_random_event(self.role)
+                if self.task:
+                    self.task.assign(self)
+                    logger.info(f"{self.name} assigned task: {self.task.name} at {self.task.location}")
             self.move_toward_task()
             self.update_status()
 

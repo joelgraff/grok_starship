@@ -349,3 +349,74 @@
 2025-03-28 22:12:25,218 - INFO - calling model.step for timestep 46 
 2025-03-28 22:12:25,219 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
 2025-03-28 22:12:25,219 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:38,215 - INFO - Crew Alice Carter initialized at (1, 0, 0) with Health=85, Mood=75
+2025-03-28 22:25:38,215 - INFO - Crew Bob Nguyen initialized at (1, 0, 0) with Health=90, Mood=80
+2025-03-28 22:25:38,291 - INFO - calling model.step for timestep 1 
+2025-03-28 22:25:38,291 - INFO - Alice Carter assigned task: Recalibrate Navigation at (1, 0, 0)
+2025-03-28 22:25:38,291 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:38,292 - INFO - Bob Nguyen assigned task: Negotiate with Aliens at (1, 1, 1)
+2025-03-28 22:25:38,292 - INFO - Bob Nguyen moved to (1, 1, 0) toward Negotiate with Aliens
+2025-03-28 22:25:38,292 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:39,293 - INFO - calling model.step for timestep 2 
+2025-03-28 22:25:39,293 - INFO - Bob Nguyen moved to (1, 1, 1) toward Negotiate with Aliens
+2025-03-28 22:25:39,293 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:39,294 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:40,294 - INFO - calling model.step for timestep 3 
+2025-03-28 22:25:40,295 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:40,295 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:41,295 - INFO - calling model.step for timestep 4 
+2025-03-28 22:25:41,296 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:41,296 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:46,298 - INFO - calling model.step for timestep 5 
+2025-03-28 22:25:46,298 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:46,299 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:47,300 - INFO - calling model.step for timestep 6 
+2025-03-28 22:25:47,300 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:47,300 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:48,301 - INFO - calling model.step for timestep 7 
+2025-03-28 22:25:48,301 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:25:48,302 - INFO - Alice Carter morale boosted by 1 from 1 nearby crew
+2025-03-28 22:30:18,175 - INFO - Crew Alice Carter initialized at (1, 0, 0) with Health=85, Mood=75
+2025-03-28 22:30:18,175 - INFO - Crew Bob Nguyen initialized at (1, 0, 0) with Health=90, Mood=80
+2025-03-28 22:30:18,249 - INFO - calling model.step for timestep 1 
+2025-03-28 22:30:18,249 - INFO - Alice Carter assigned task: Routine Maintenance at (2, 5, 6)
+2025-03-28 22:30:18,250 - INFO - Alice Carter moved to (2, 0, 0) toward Routine Maintenance
+2025-03-28 22:30:18,250 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:18,250 - INFO - Bob Nguyen assigned task: Recalibrate Navigation at (1, 0, 0)
+2025-03-28 22:30:18,250 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:19,251 - INFO - calling model.step for timestep 2 
+2025-03-28 22:30:19,251 - INFO - Alice Carter moved to (2, 1, 0) toward Routine Maintenance
+2025-03-28 22:30:19,252 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:19,252 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:20,253 - INFO - calling model.step for timestep 3 
+2025-03-28 22:30:20,253 - INFO - Alice Carter moved to (2, 2, 0) toward Routine Maintenance
+2025-03-28 22:30:20,253 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:20,253 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:21,254 - INFO - calling model.step for timestep 4 
+2025-03-28 22:30:21,254 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:21,255 - INFO - Alice Carter moved to (2, 3, 0) toward Routine Maintenance
+2025-03-28 22:30:21,255 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:22,256 - INFO - calling model.step for timestep 5 
+2025-03-28 22:30:22,256 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:22,256 - INFO - Alice Carter moved to (2, 4, 0) toward Routine Maintenance
+2025-03-28 22:30:22,256 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:23,257 - INFO - calling model.step for timestep 6 
+2025-03-28 22:30:23,257 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:23,258 - INFO - Alice Carter moved to (2, 5, 0) toward Routine Maintenance
+2025-03-28 22:30:23,258 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:24,259 - INFO - calling model.step for timestep 7 
+2025-03-28 22:30:24,259 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:24,259 - INFO - Alice Carter moved to (2, 5, 1) toward Routine Maintenance
+2025-03-28 22:30:24,259 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:25,259 - INFO - calling model.step for timestep 8 
+2025-03-28 22:30:25,260 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:25,260 - INFO - Alice Carter moved to (2, 5, 2) toward Routine Maintenance
+2025-03-28 22:30:25,260 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:26,261 - INFO - calling model.step for timestep 9 
+2025-03-28 22:30:26,261 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:26,261 - INFO - Alice Carter moved to (2, 5, 3) toward Routine Maintenance
+2025-03-28 22:30:26,261 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:27,262 - INFO - calling model.step for timestep 10 
+2025-03-28 22:30:27,262 - INFO - Alice Carter moved to (2, 5, 4) toward Routine Maintenance
+2025-03-28 22:30:27,262 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:30:27,262 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
