@@ -420,3 +420,47 @@
 2025-03-28 22:30:27,262 - INFO - Alice Carter moved to (2, 5, 4) toward Routine Maintenance
 2025-03-28 22:30:27,262 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
 2025-03-28 22:30:27,262 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:47,311 - INFO - Crew Alice Carter initialized at (1, 0, 0) with Health=85, Mood=75
+2025-03-28 22:32:47,311 - INFO - Crew Bob Nguyen initialized at (1, 0, 0) with Health=90, Mood=80
+2025-03-28 22:32:47,387 - INFO - calling model.step for timestep 1 
+2025-03-28 22:32:47,387 - INFO - Bob Nguyen assigned task: Recalibrate Navigation at (1, 0, 0)
+2025-03-28 22:32:47,387 - INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+2025-03-28 22:32:47,387 - INFO - Alice Carter assigned task: Routine Maintenance at (2, 5, 6)
+2025-03-28 22:32:47,387 - INFO - Alice Carter moved to (2, 0, 0) toward Routine Maintenance
+2025-03-28 22:32:47,387 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:48,388 - INFO - calling model.step for timestep 2 
+2025-03-28 22:32:48,389 - INFO - Alice Carter moved to (2, 1, 0) toward Routine Maintenance
+2025-03-28 22:32:48,389 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:48,389 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:49,389 - INFO - calling model.step for timestep 3 
+2025-03-28 22:32:49,390 - INFO - Alice Carter moved to (2, 2, 0) toward Routine Maintenance
+2025-03-28 22:32:49,390 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:49,390 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:50,391 - INFO - calling model.step for timestep 4 
+2025-03-28 22:32:50,391 - INFO - Alice Carter moved to (2, 3, 0) toward Routine Maintenance
+2025-03-28 22:32:50,391 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:50,392 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:51,392 - INFO - calling model.step for timestep 5 
+2025-03-28 22:32:51,392 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:51,392 - INFO - Alice Carter moved to (2, 4, 0) toward Routine Maintenance
+2025-03-28 22:32:51,393 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:52,393 - INFO - calling model.step for timestep 6 
+2025-03-28 22:32:52,393 - INFO - Alice Carter moved to (2, 5, 0) toward Routine Maintenance
+2025-03-28 22:32:52,393 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:52,393 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:53,394 - INFO - calling model.step for timestep 7 
+2025-03-28 22:32:53,394 - INFO - Alice Carter moved to (2, 5, 1) toward Routine Maintenance
+2025-03-28 22:32:53,394 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:53,394 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:54,395 - INFO - calling model.step for timestep 8 
+2025-03-28 22:32:54,395 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:54,395 - INFO - Alice Carter moved to (2, 5, 2) toward Routine Maintenance
+2025-03-28 22:32:54,395 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:55,396 - INFO - calling model.step for timestep 9 
+2025-03-28 22:32:55,396 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:55,396 - INFO - Alice Carter moved to (2, 5, 3) toward Routine Maintenance
+2025-03-28 22:32:55,396 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:56,397 - INFO - calling model.step for timestep 10 
+2025-03-28 22:32:56,397 - INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+2025-03-28 22:32:56,397 - INFO - Alice Carter moved to (2, 5, 4) toward Routine Maintenance
+2025-03-28 22:32:56,397 - INFO - Alice Carter morale boosted by 0 from 0 nearby crew
