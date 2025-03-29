@@ -1,0 +1,120 @@
+[N/A]: INFO - Ship initialized with systems: {'navigation': {'status': 'operational', 'integrity': 100}, 'engineering': {'status': 'operational', 'integrity': 100}, 'hull': {'status': 'operational', 'integrity': 100}, 'security': {'status': 'operational', 'integrity': 100}}
+[N/A]: INFO - Ship initialized with systems: {'navigation': {'status': 'operational', 'integrity': 100}, 'engineering': {'status': 'operational', 'integrity': 100}, 'hull': {'status': 'operational', 'integrity': 100}, 'security': {'status': 'operational', 'integrity': 100}}
+[0]: INFO - Alice Carter status: Health=85, Mood=75, Task=None (0% complete)
+[0]: INFO - Bob Nguyen status: Health=90, Mood=80, Task=None (0% complete)
+[N/A]: INFO - calling model.step for timestep 1 
+[N/A]: INFO - Bob Nguyen assigned task: Recalibrate Navigation at (1, 0, 0)
+[N/A]: INFO - Bob Nguyen morale boosted by 1 from 1 nearby crew
+[N/A]: INFO - Alice Carter assigned task: Routine Maintenance at (2, 5, 6)
+[N/A]: INFO - Alice Carter moved to (2, 0, 0) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - calling model.step for timestep 2 
+[N/A]: INFO - Alice Carter moved to (2, 1, 0) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - calling model.step for timestep 3 
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Alice Carter moved to (2, 2, 0) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[2]: INFO - Task Routine Maintenance completed by ['Alice Carter']
+[N/A]: INFO - calling model.step for timestep 4 
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Alice Carter moved to (2, 3, 0) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - calling model.step for timestep 5 
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Alice Carter moved to (2, 4, 0) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[4]: INFO - Task Recalibrate Navigation completed by ['Bob Nguyen']
+[N/A]: INFO - calling model.step for timestep 6 
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Alice Carter moved to (2, 5, 0) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - calling model.step for timestep 7 
+[N/A]: INFO - Alice Carter moved to (2, 5, 1) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - calling model.step for timestep 8 
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Alice Carter moved to (2, 5, 2) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - calling model.step for timestep 9 
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Alice Carter moved to (2, 5, 3) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - calling model.step for timestep 10 
+[N/A]: INFO - Alice Carter moved to (2, 5, 4) toward Routine Maintenance
+[N/A]: INFO - Alice Carter morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Bob Nguyen morale boosted by 0 from 0 nearby crew
+[N/A]: INFO - Ship initialized with systems: {'navigation': {'status': 'operational', 'integrity': 100}, 'engineering': {'status': 'operational', 'integrity': 100}, 'hull': {'status': 'operational', 'integrity': 100}, 'security': {'status': 'operational', 'integrity': 100}}
+[N/A]: INFO - Ship initialized with systems: {'navigation': {'status': 'operational', 'integrity': 100}, 'engineering': {'status': 'operational', 'integrity': 100}, 'hull': {'status': 'operational', 'integrity': 100}, 'security': {'status': 'operational', 'integrity': 100}}
+[0]: INFO - Alice Carter status: Health=85, Mood=75, Task=None (0% complete)
+[0]: INFO - Bob Nguyen status: Health=90, Mood=80, Task=None (0% complete)
+[N/A]: INFO - calling model.step for timestep 1 
+[0]: INFO - Alice Carter assigned task: Repair Hull Breach at (2, 5, 6) (0% complete)
+[N/A]: INFO - Alice Carter moved to (2, 0, 0) toward Repair Hull Breach
+[0]: INFO - Alice Carter status: Health=85, Mood=73, Task=Repair Hull Breach (0% complete), Morale boost=0
+[0]: INFO - Bob Nguyen assigned task: Recalibrate Navigation at (1, 0, 0) (0% complete)
+[0]: INFO - Bob Nguyen status: Health=90, Mood=81, Task=Recalibrate Navigation (0% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 2 
+[1]: INFO - Bob Nguyen status: Health=90, Mood=82, Task=Recalibrate Navigation (19% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 1, 0) toward Repair Hull Breach
+[1]: INFO - Alice Carter status: Health=85, Mood=71, Task=Repair Hull Breach (9% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 3 
+[2]: INFO - Bob Nguyen status: Health=90, Mood=83, Task=Recalibrate Navigation (40% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 2, 0) toward Repair Hull Breach
+[2]: INFO - Alice Carter status: Health=85, Mood=69, Task=Repair Hull Breach (19% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 4 
+[3]: INFO - Bob Nguyen status: Health=90, Mood=84, Task=Recalibrate Navigation (60% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 3, 0) toward Repair Hull Breach
+[3]: INFO - Alice Carter status: Health=85, Mood=67, Task=Repair Hull Breach (30% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 5 
+[4]: INFO - Bob Nguyen status: Health=90, Mood=85, Task=Recalibrate Navigation (80% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 4, 0) toward Repair Hull Breach
+[4]: INFO - Alice Carter status: Health=85, Mood=65, Task=Repair Hull Breach (40% complete), Morale boost=0
+[4]: INFO - Task Recalibrate Navigation completed by ['Bob Nguyen']
+[N/A]: INFO - calling model.step for timestep 6 
+[5]: INFO - Bob Nguyen status: Health=90, Mood=86, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 5, 0) toward Repair Hull Breach
+[5]: INFO - Alice Carter status: Health=85, Mood=63, Task=Repair Hull Breach (50% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 7 
+[6]: INFO - Bob Nguyen status: Health=90, Mood=87, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 5, 1) toward Repair Hull Breach
+[6]: INFO - Alice Carter status: Health=85, Mood=61, Task=Repair Hull Breach (60% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 8 
+[N/A]: INFO - Alice Carter moved to (2, 5, 2) toward Repair Hull Breach
+[7]: INFO - Alice Carter status: Health=85, Mood=59, Task=Repair Hull Breach (70% complete), Morale boost=0
+[7]: INFO - Bob Nguyen status: Health=90, Mood=88, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 9 
+[8]: INFO - Bob Nguyen status: Health=90, Mood=89, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 5, 3) toward Repair Hull Breach
+[8]: INFO - Alice Carter status: Health=85, Mood=57, Task=Repair Hull Breach (80% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 10 
+[9]: INFO - Bob Nguyen status: Health=90, Mood=90, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 5, 4) toward Repair Hull Breach
+[9]: INFO - Alice Carter status: Health=85, Mood=55, Task=Repair Hull Breach (90% complete), Morale boost=0
+[N/A]: INFO - System hull updated: {'status': 'operational', 'integrity': 100} -> {'status': 'operational', 'integrity': 100}
+[9]: INFO - Task Repair Hull Breach completed by ['Alice Carter']
+[N/A]: INFO - calling model.step for timestep 11 
+[10]: INFO - Bob Nguyen status: Health=90, Mood=91, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 5, 5) toward Repair Hull Breach
+[10]: INFO - Alice Carter status: Health=85, Mood=53, Task=Repair Hull Breach (100% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 12 
+[11]: INFO - Bob Nguyen status: Health=90, Mood=92, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - Alice Carter moved to (2, 5, 6) toward Repair Hull Breach
+[11]: INFO - Alice Carter status: Health=85, Mood=51, Task=Repair Hull Breach (100% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 13 
+[12]: INFO - Alice Carter status: Health=85, Mood=49, Task=Repair Hull Breach (100% complete), Morale boost=0
+[12]: INFO - Bob Nguyen status: Health=90, Mood=93, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 14 
+[13]: INFO - Alice Carter status: Health=85, Mood=47, Task=Repair Hull Breach (100% complete), Morale boost=0
+[13]: INFO - Bob Nguyen status: Health=90, Mood=94, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 15 
+[14]: INFO - Bob Nguyen status: Health=90, Mood=95, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[14]: INFO - Alice Carter status: Health=85, Mood=45, Task=Repair Hull Breach (100% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 16 
+[15]: INFO - Bob Nguyen status: Health=90, Mood=96, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[15]: INFO - Alice Carter status: Health=85, Mood=43, Task=Repair Hull Breach (100% complete), Morale boost=0
+[N/A]: INFO - calling model.step for timestep 17 
+[16]: INFO - Bob Nguyen status: Health=90, Mood=97, Task=Recalibrate Navigation (100% complete), Morale boost=0
+[16]: INFO - Alice Carter status: Health=85, Mood=41, Task=Repair Hull Breach (100% complete), Morale boost=0

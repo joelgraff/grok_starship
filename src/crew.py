@@ -4,15 +4,6 @@ from src.tasks import TaskType, Task  # Fully qualified import
 import random
 import logging
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("crew_actions.log"),  # Log to file
-        logging.StreamHandler()                   # Also print to console
-    ]
-)
 logger = logging.getLogger(__name__)
 
 class CrewAgent(Agent):
@@ -26,18 +17,31 @@ class CrewAgent(Agent):
         self.role = data["role"]
         self.health = data["health"]
         self.mood = data["mood"]
-        self.position = (1, 0, 0)    # Start on Bridge Deck
+        self.position = (1, 0, 0)
         self.task = None
         self.performance = 100
-        logger.info(f"Crew {self.name} initialized at {self.position} with Health={self.health}, Mood={self.mood}")
+
+        logger.info(
+            "%s status: Health=%s, Mood=%s, Task=%s (%s%% complete)",
+            self.name, self.health, self.mood, self.task.name if self.task else "None",
+            self.task.progress if self.task else 0,
+            extra={'sim': self.model}
+        )
 
     def step(self):
         if self.health > 0:
-            if not self.task:
+            if not self.task and not hasattr(self, 'cooldown'):
                 self.task = self.model.task_manager.generate_random_event(self.role)
                 if self.task:
                     self.task.assign(self)
-                    logger.info(f"{self.name} assigned task: {self.task.name} at {self.task.location}")
+                    logger.info(
+                        f"{self.name} assigned task: {self.task.name} at {self.task.location} (0% complete)",
+                        extra={'sim': self.model}
+                    )
+            elif not self.task and hasattr(self, 'cooldown'):
+                self.cooldown -= 1
+                if self.cooldown <= 0:
+                    del self.cooldown
             self.move_toward_task()
             self.update_status()
 
@@ -71,19 +75,25 @@ class CrewAgent(Agent):
     def update_status(self):
         if self.health > 0:
             nearby_crew = self.get_nearby_crew()
-            morale_boost = len(nearby_crew) * 1  # +1 mood per nearby crew
+            morale_boost = len(nearby_crew) * 1
             if self.task and self.task.priority > 5:
                 self.mood -= 2
                 self.health -= 1 if random.random() < 0.1 else 0
             else:
                 self.mood += 1
             self.mood += morale_boost
-            logger.info(f"{self.name} morale boosted by {morale_boost} from {len(nearby_crew)} nearby crew")
-        self.mood = max(0, min(100, self.mood))
-        self.health = max(0, min(100, self.health))
-        self.performance = min(100, self.health + self.mood // 2)
-
+            self.mood = max(0, min(100, self.mood))
+            self.health = max(0, min(100, self.health))
+            self.performance = min(100, self.health + self.mood // 2)
+            logger.info(
+                "%s status: Health=%s, Mood=%s, Task=%s (%s%% complete), Morale boost=%s",
+                self.name, self.health, self.mood,
+                self.task.name if self.task else "None",
+                self.task.progress if self.task else 0,
+                morale_boost,
+                extra={'sim': self.model}
+            )
         if self.health == 0:
             self.task = None
-            logger.info(f"{self.name} has died (Health = 0)")
+            logger.info("%s has died (Health = 0)", self.name, extra={'sim': self.model})
             self.model.agents.remove(self)

@@ -28,7 +28,9 @@ class StarshipInterface:
 
     def update_display(self):
         crew_text = "\n".join(
-            f"{agent.name}: {agent.role}, Health: {agent.health}, Mood: {agent.mood}, Pos: {agent.position}, Task: {agent.task.name if agent.task else 'None'}"
+            f"{agent.name}: {agent.role}, Health: {agent.health}, Mood: {agent.mood}, "
+            f"Pos: {agent.position}, Task: {agent.task.name if agent.task else 'None'} "
+            f"({agent.task.progress if agent.task else 0}% complete)"
             for agent in self.simulation.crew
         )
         self.crew_label.config(text=crew_text)

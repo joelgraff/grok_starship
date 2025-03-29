@@ -1,6 +1,9 @@
 # src/tasks.py
 from enum import Enum
 import random
+import logging
+
+logger = logging.getLogger(__name__)  # Define logger for this module
 
 class TaskType(Enum):
     REPAIR = "Repair"
@@ -24,6 +27,7 @@ class Task:
         self.assigned_to.append(agent)
 
 class TaskManager:
+
     def __init__(self, simulation):
         self.simulation = simulation
         self.active_tasks = []
@@ -56,14 +60,19 @@ class TaskManager:
     def complete_task(self, task):
         if task in self.active_tasks:
             self.active_tasks.remove(task)
-
-            # Affect ship systems
+            # Affect ship systems and log
             if task.name == "Repair Hull Breach":
                 self.simulation.ship.update_system("hull", "operational", +20)
             elif task.name == "Stabilize Warp Core":
                 self.simulation.ship.update_system("engineering", "operational", +15)
             elif task.name == "Intruder Alert":
                 self.simulation.ship.update_system("security", "operational", +25)
+
+            logger.info(
+                "Task %s completed by %s",
+                task.name, [a.name for a in task.assigned_to],
+                extra={'sim': self.simulation}
+            )
 
 class Task:
     def __init__(self, name, task_type, location, priority, duration, roles):
@@ -72,8 +81,13 @@ class Task:
         self.location = location
         self.priority = priority
         self.duration = duration
+        self.total_duration = duration  # Store original duration
         self.assigned_to = []
-        self.roles = roles  # Roles that can perform this task
+        self.roles = roles
+
+    @property
+    def progress(self):
+        return max(0, int((1 - self.duration / self.total_duration) * 100)) if self.total_duration > 0 else 100 # % complete
 
     def assign(self, agent):
         self.assigned_to.append(agent)            
