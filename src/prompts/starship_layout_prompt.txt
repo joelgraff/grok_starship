@@ -1,0 +1,13 @@
+I am developing a Python-based STAR SHIP simulation project for a single computer with a Tkinter GUI, based on "The Complete STAR SHIP: A Simulation Project." I need a module for managing crew movements across the starship, building on an existing deck layout generation module. The crew movement module should:
+- Use the deck layout data (e.g., graph of rooms and corridors) to determine valid movement paths.
+- Support random daily activities (e.g., moving to lounge or quarters) and command-assigned tasks (e.g., "go to engineering").
+- Include basic movement logic (e.g., step-by-step pathfinding or random walks).
+- Prepare for integration with a future crew simulation module tracking health and fatigue.
+
+Please provide:
+- A design outline for the movement logic.
+- A sample Python implementation using the deck layout data, with optional pathfinding (e.g., A* algorithm).
+- Suggestions for real-time performance optimization on a single computer.
+- A test plan to verify crew movements.
+
+I’m already developing this, so please refine or expand on my current work.

@@ -1,0 +1,13 @@
+I am developing a Python-based STAR SHIP simulation project with a Tkinter GUI for a single computer, inspired by "The Complete STAR SHIP: A Simulation Project." I need an engineering module to track and manage ship systems. The module should:
+- Monitor systems (e.g., energy, shields, propulsion) with adjustable status (0-100).
+- Respond to crew tasks (e.g., repair shields) from the crew simulation.
+- Update system status in a common_data dictionary.
+- Display engineering data in the GUI (e.g., progress bars).
+
+Please provide:
+- A design outline for the engineering logic.
+- A sample Python implementation with system updates and Tkinter display.
+- Suggestions for integrating with crew and combat modules.
+- A test plan to verify system management.
+
+Assume integration with a simulation controller.

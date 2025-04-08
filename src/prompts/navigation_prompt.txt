@@ -1,0 +1,13 @@
+I am developing a Python-based STAR SHIP simulation project with a Tkinter GUI for a single computer, inspired by "The Complete STAR SHIP: A Simulation Project." I need a navigation module to manage ship course plotting and interaction with celestial objects. The module should:
+- Plot courses based on operator commands (e.g., "set course to sector X").
+- Track celestial objects (e.g., array of 20 objects with positions).
+- Update ship position in a common_data dictionary.
+- Display navigation data in the GUI (e.g., text labels or simple map).
+
+Please provide:
+- A design outline for the navigation logic.
+- A sample Python implementation using random data for celestial objects and Tkinter for display.
+- Suggestions for optimizing array sizes and real-time updates.
+- A test plan to verify course plotting and object tracking.
+
+Assume integration with a simulation controller.

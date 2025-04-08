@@ -1,0 +1,13 @@
+I am developing a Python-based STAR SHIP simulation project with a Tkinter GUI for a single computer, based on "The Complete STAR SHIP: A Simulation Project." I need a helm module to handle ship maneuvers and evasive tactics. The module should:
+- Execute maneuvers (e.g., turn, accelerate) based on operator commands.
+- Implement basic evasive tactics during combat (e.g., random direction changes).
+- Update ship status in a common_data dictionary.
+- Display helm data in the GUI (e.g., speed, direction).
+
+Please provide:
+- A design outline for the helm logic.
+- A sample Python implementation with random tactics and Tkinter display.
+- Suggestions for syncing with combat events.
+- A test plan to verify maneuvers and tactics.
+
+Assume integration with a simulation controller.

@@ -1,0 +1,13 @@
+I am developing a Python-based STAR SHIP simulation project with a Tkinter GUI for a single computer, inspired by "The Complete STAR SHIP: A Simulation Project." I need a crew simulation module to run alongside the starship simulation, integrating with existing deck layout and crew movement modules. The module should:
+- Track crew attributes: health (0-100), fatigue (0-100), role (e.g., engineer), current task, and location.
+- Update health and fatigue based on events (e.g., combat reduces health, tasks increase fatigue).
+- Assign tasks (e.g., repair, navigate) that influence movement via the crew movement module.
+- Display crew status in the GUI (e.g., health bars, task labels).
+
+Please provide:
+- A design outline for the crew simulation logic.
+- A sample Python implementation using a threaded loop for updates and Tkinter for display.
+- Suggestions for syncing with starship events (e.g., via a common_data dictionary).
+- A test plan to verify health/fatigue updates and task assignments.
+
+Assume deck layouts and movements are under development.

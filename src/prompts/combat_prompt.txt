@@ -1,0 +1,13 @@
+I am developing a Python-based STAR SHIP simulation project with a Tkinter GUI for a single computer, based on "The Complete STAR SHIP: A Simulation Project." I need a combat/damage system module to simulate weapon effects and damage distribution. The module should:
+- Handle weapons (e.g., phasers, photon torpedoes) with random damage effects.
+- Distribute damage across ship systems and crew health (via common_data).
+- Update combat status and display results in the GUI (e.g., damage reports).
+- Prepare for integration with helm and engineering modules.
+
+Please provide:
+- A design outline for the combat logic.
+- A sample Python implementation using random numbers and Tkinter display.
+- Suggestions for realistic damage tuning.
+- A test plan to verify weapon effects and damage distribution.
+
+Assume integration with a simulation controller.

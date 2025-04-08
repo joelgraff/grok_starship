@@ -1,5 +1,4 @@
 mesa
-pygame
-tkinter
+pygame>=2.5.2
+PyQt5>=5.15.7
 numpy
-faker
