@@ -4,14 +4,15 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import pygame
 
 # Centralized ship state
+# ship.py
 class Ship:
     def __init__(self):
         self.energy = 1000
         self.shields = 100
         self.position = (0, 0)
-        self.crew_fatigue = 0  # Crew behavior example
-        self.deck_paths = {"corridor_a": "open"}  # Deck layout example
-        self.targets = []
+        self.crew_fatigue = 0
+        self.deck_paths = {"corridor_a": "open"}
+        self.targets = []  # List of targets with position and health
         self.status = "Operational"
 
     def update_status(self):
@@ -19,6 +20,8 @@ class Ship:
             self.status = "Disabled"
         elif self.shields <= 0:
             self.status = "Vulnerable"
+        elif self.crew_fatigue > 50:
+            self.status = "Crew Fatigued"
 
 # Base Module Template
 class Module:

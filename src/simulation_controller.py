@@ -8,7 +8,7 @@ class SimulationController:
             "nav": "navigation",
             "crew": "crew behavior",
             "deck": "deck layout",
-            # Add more as you expand (e.g., "com" for "combat")
+            "com": "combat",  # Added for Combat
         }
 
     def add_module(self, module):
@@ -37,6 +37,5 @@ class SimulationController:
             target_module = self.module_abbrevs[abbrev]
             for module in self.modules:
                 if target_module in module.name.lower():
-                    # Pass the command without the abbreviation
                     return module.handle_command(" ".join(parts[1:]) if len(parts) > 1 else "")
         return f"Command not recognized: Unknown module abbreviation '{abbrev}'"

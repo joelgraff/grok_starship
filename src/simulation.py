@@ -9,6 +9,7 @@ from simulation_controller import SimulationController
 from modules.navigation import Navigation
 from modules.crew_behavior import CrewBehavior
 from modules.deck_layout import DeckLayout
+from modules.combat import Combat  # New import
 from gui.tabs import setup_gui
 import json
 
@@ -32,6 +33,7 @@ class StarShipApp(QMainWindow):
             "Navigation": QColor("blue"),
             "Crew Behavior": QColor("green"),
             "Deck Layout": QColor("purple"),
+            "Combat": QColor("red"),  # Added for Combat
         }
 
         # GUI setup
@@ -49,6 +51,7 @@ class StarShipApp(QMainWindow):
         self.controller.add_module(Navigation(self.ship))
         self.controller.add_module(CrewBehavior(self.ship))
         self.controller.add_module(DeckLayout(self.ship))
+        self.controller.add_module(Combat(self.ship))  # Add Combat module
 
     def update_simulation(self):
         self.controller.update()
@@ -58,7 +61,7 @@ class StarShipApp(QMainWindow):
             self.module_labels[module.name].setText(module.get_status())
 
         # Update PyGame surface
-        self.nav_widget.update_surface(self.ship.position)
+        self.nav_widget.update_surface(self.ship.position, self.ship.targets)
 
         # Log to debug tab with timestamps and colors
         timestamp = datetime.now().strftime('%H:%M:%S')
