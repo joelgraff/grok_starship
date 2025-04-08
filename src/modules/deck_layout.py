@@ -1,15 +1,17 @@
-# deck_layout.py
+# modules/deck_layout.py
 import random
-import modules.module as m
+from modules.module import Module
 
-class DeckLayout(m.Module):
+class DeckLayout(Module):
     def __init__(self, ship):
         super().__init__(ship)
         self.name = "Deck Layout"
 
     def update(self):
+        # Randomly toggle corridor status
         if random.random() < 0.1:
-            self.ship.deck_paths["corridor_a"] = "blocked"
+            current = self.ship.deck_paths["corridor_a"]
+            self.ship.deck_paths["corridor_a"] = "blocked" if current == "open" else "open"
 
     def get_status(self):
         return f"Deck Layout: Corridor A {self.ship.deck_paths['corridor_a']}"
