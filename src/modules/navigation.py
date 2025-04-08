@@ -1,7 +1,7 @@
 # navigation.py
-from modules.module import Module
+import modules.module as m
 
-class Navigation(Module):
+class Navigation(m.Module):
     def __init__(self, ship):
         super().__init__(ship)
         self.name = "Navigation"

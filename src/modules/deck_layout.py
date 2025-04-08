@@ -1,8 +1,8 @@
 # deck_layout.py
 import random
-from module import Module
+import modules.module as m
 
-class DeckLayout(Module):
+class DeckLayout(m.Module):
     def __init__(self, ship):
         super().__init__(ship)
         self.name = "Deck Layout"

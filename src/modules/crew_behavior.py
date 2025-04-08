@@ -1,8 +1,8 @@
 # crew_behavior.py
 import random
-from module import Module
+import modules.module as m
 
-class CrewBehavior(Module):
+class CrewBehavior(m.Module):
     def __init__(self, ship):
         super().__init__(ship)
         self.name = "Crew Behavior"
