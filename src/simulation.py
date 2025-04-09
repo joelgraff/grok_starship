@@ -1,4 +1,5 @@
 # simulation.py
+import json
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QColor
@@ -9,9 +10,9 @@ from simulation_controller import SimulationController
 from modules.navigation import Navigation
 from modules.crew_behavior import CrewBehavior
 from modules.deck_layout import DeckLayout
-from modules.combat import Combat  # New import
+from modules.combat import Combat
+from modules.engineering import Engineering  # New import
 from gui.tabs import setup_gui
-import json
 
 class StarShipApp(QMainWindow):
     def __init__(self):
@@ -33,7 +34,8 @@ class StarShipApp(QMainWindow):
             "Navigation": QColor("blue"),
             "Crew Behavior": QColor("green"),
             "Deck Layout": QColor("purple"),
-            "Combat": QColor("red"),  # Added for Combat
+            "Combat": QColor("red"),
+            "Engineering": QColor("orange"),  # Added for Engineering
         }
 
         # GUI setup
@@ -51,7 +53,8 @@ class StarShipApp(QMainWindow):
         self.controller.add_module(Navigation(self.ship))
         self.controller.add_module(CrewBehavior(self.ship))
         self.controller.add_module(DeckLayout(self.ship))
-        self.controller.add_module(Combat(self.ship))  # Add Combat module
+        self.controller.add_module(Combat(self.ship))
+        self.controller.add_module(Engineering(self.ship))  # Add Engineering
 
     def update_simulation(self):
         self.controller.update()
@@ -60,8 +63,9 @@ class StarShipApp(QMainWindow):
         for module in self.controller.modules:
             self.module_labels[module.name].setText(module.get_status())
 
-        # Update PyGame surface
+        # Update PyGame surfaces
         self.nav_widget.update_surface(self.ship.position, self.ship.targets)
+        self.deck_widget.update_surface(deck_paths=self.ship.deck_paths)
 
         # Log to debug tab with timestamps and colors
         timestamp = datetime.now().strftime('%H:%M:%S')

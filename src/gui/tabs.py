@@ -1,4 +1,4 @@
-# tabs.py
+# gui/tabs.py
 import json
 from datetime import datetime
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QTextEdit, QPushButton, QCheckBox, QTabWidget
@@ -39,9 +39,21 @@ def setup_navigation_view_tab(app):
     app.nav_view_label = QLabel("Navigation View (PyGame)")
     nav_view_layout.addWidget(app.nav_view_label)
     app.nav_widget = PygameWidget(app)
+    app.nav_widget.set_mode("navigation")
     nav_view_layout.addWidget(app.nav_widget)
     nav_view_tab.setLayout(nav_view_layout)
     return nav_view_tab, "Navigation View"
+
+def setup_deck_view_tab(app):
+    deck_view_tab = QWidget()
+    deck_view_layout = QVBoxLayout()
+    app.deck_view_label = QLabel("Deck View (PyGame)")
+    deck_view_layout.addWidget(app.deck_view_label)
+    app.deck_widget = PygameWidget(app)
+    app.deck_widget.set_mode("deck")
+    deck_view_layout.addWidget(app.deck_widget)
+    deck_view_tab.setLayout(deck_view_layout)
+    return deck_view_tab, "Deck View"
 
 def setup_debug_log_tab(app):
     debug_tab = QWidget()
@@ -86,6 +98,10 @@ def setup_gui(app):
     # Navigation View tab
     nav_view_tab, nav_title = setup_navigation_view_tab(app)
     app.tabs.addTab(nav_view_tab, nav_title)
+
+    # Deck View tab
+    deck_view_tab, deck_title = setup_deck_view_tab(app)
+    app.tabs.addTab(deck_view_tab, deck_title)
 
     # Debug Log tab
     debug_tab, debug_title = setup_debug_log_tab(app)
