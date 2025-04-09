@@ -3,11 +3,11 @@ import random
 from modules.module import Module
 
 class Combat(Module):
-    def __init__(self, ship):
+    def __init__(self, ship, common_data=None):
         super().__init__(ship)
         self.name = "Combat"
 
-    def update(self):
+    def update(self, sim_time=None):
         # Randomly spawn a target if fewer than 3 exist
         if len(self.ship.targets) < 3 and random.random() < 0.1:
             self.ship.targets.append({

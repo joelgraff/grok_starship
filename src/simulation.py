@@ -3,7 +3,7 @@ import json
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QColor
-from datetime import datetime
+from datetime import datetime, timedelta
 import pygame
 from ship import Ship
 from simulation_controller import SimulationController
@@ -18,11 +18,30 @@ class StarShipApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("STAR SHIP Simulation")
-        self.setGeometry(100, 100, 1200, 600)  # Increased width for better spacing
+        self.setGeometry(100, 100, 1200, 600)
 
         # Initialize core components
         self.ship = Ship()
-        self.controller = SimulationController(self.ship)
+        self.start_time = datetime.now()  # Sim start time
+        self.tick_count = 0
+        self.common_data = {
+            "simulation": {"tick_count": 0, "sim_time": self.start_time.strftime('%Y-%m-%d %H:%M:%S')},
+            "engineering": {
+                "energy": 1000,
+                "max_energy": 2000,
+                "allocations": {"shields": 30, "weapons": 20, "propulsion": 40, "reserve": 10},
+                "shields": 100,
+                "system_health": {"shields": 100, "weapons": 100, "propulsion": 100},
+                "impulse_speed": 50,
+                "warp_factor": 0,
+            },
+            "combat": {},
+            "navigation": {},
+            "crew_tasks": [],
+            "debug": []
+        }
+        self.ship.common_data = self.common_data
+        self.controller = SimulationController(self.ship, self.common_data)
         self.setup_modules()
 
         # PyGame clock
@@ -38,37 +57,52 @@ class StarShipApp(QMainWindow):
             "Engineering": QColor("orange"),
         }
 
+        # Initialize UI-related attributes
+        self.module_bars = {}  # Added to prevent attribute error
+
         # GUI setup
         setup_gui(self)
 
-        # Set up QTimer for simulation updates
+        # Set up QTimer (1 tick/second) - Moved after GUI setup
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_simulation)
-        self.timer.start(1000)  # Update every 1000 ms
+        self.timer.start(1000)
+        self.common_data["debug"].append({"source": "sim", "msg": "Tick rate set to 1/second",
+                                         "timestamp": self.start_time.strftime('%Y-%m-%d %H:%M:%S')})
 
         # Start simulation
         self.controller.start()
 
     def setup_modules(self):
-        self.controller.add_module(Navigation(self.ship))
-        self.controller.add_module(CrewBehavior(self.ship))
-        self.controller.add_module(DeckLayout(self.ship))
-        self.controller.add_module(Combat(self.ship))
-        self.controller.add_module(Engineering(self.ship))
+        self.controller.add_module(Navigation(self.ship, self.common_data))
+        self.controller.add_module(CrewBehavior(self.ship, self.common_data))
+        self.controller.add_module(DeckLayout(self.ship, self.common_data))
+        self.controller.add_module(Combat(self.ship, self.common_data))
+        self.controller.add_module(Engineering(self.ship, self.common_data))
 
     def update_simulation(self):
+        self.tick_count += 1
+        self.common_data["simulation"]["tick_count"] = self.tick_count
+        self.common_data["simulation"]["sim_time"] = (self.start_time +
+            timedelta(seconds=self.tick_count)).strftime('%Y-%m-%d %H:%M:%S')
         self.controller.update()
         # Update GUI
         self.ship_status_label.setText(f"Ship Status: {self.ship.status}")
         for module in self.controller.modules:
-            self.module_labels[module.name].setText(module.get_status())
+            status = module.get_status()
+            self.module_labels[module.name].setText(status)
+            if module.name == "Engineering" and "engineering" in self.module_bars:
+                eng_data = {k.split(': ')[0]: float(k.split(': ')[1].rstrip('%')) if '%' in k else k.split(': ')[1]
+                           for k in status.split('|')}
+                self.module_bars["engineering"]["energy"].setValue(int(eng_data["Energy"].split('/')[0]))
+                self.module_bars["engineering"]["shields"].setValue(int(eng_data["Shields"]))
 
         # Update PyGame surfaces
         self.nav_widget.update_surface(self.ship.position, self.ship.targets)
         self.deck_widget.update_surface(deck_paths=self.ship.deck_paths)
 
-        # Log to debug panel with timestamps and colors
-        timestamp = datetime.now().strftime('%H:%M:%S')
+        # Log to debug panel
+        timestamp = self.common_data["simulation"]["sim_time"]
         if self.log_filters["Ship Status"].isChecked():
             self.debug_log.setTextColor(self.log_colors["Ship Status"])
             self.debug_log.append(f"[{timestamp}] Ship Status: {self.ship.status}")
@@ -76,6 +110,19 @@ class StarShipApp(QMainWindow):
             if self.log_filters[module.name].isChecked():
                 self.debug_log.setTextColor(self.log_colors[module.name])
                 self.debug_log.append(f"[{timestamp}] {module.get_status()}")
+        debug_entries = self.common_data["debug"]
+        for entry in debug_entries:
+            source = entry.get("source", "Unknown")
+            msg = entry.get("msg", "")
+            time = entry.get("timestamp", timestamp)
+            if source in self.log_filters and self.log_filters[source].isChecked():
+                self.debug_log.setTextColor(self.log_colors.get(source, QColor("gray")))
+                self.debug_log.append(f"[{time}] {source.upper()}: {msg}")
+        # Prune debug log to last 100 entries
+        if len(debug_entries) > 100:
+            self.common_data["debug"] = debug_entries[-100:]
+        else:
+            self.common_data["debug"].clear()
         self.clock.tick(1)
 
     def process_command(self):
@@ -84,7 +131,7 @@ class StarShipApp(QMainWindow):
         self.command_output.setText(f"Command output: {result}")
         if self.log_filters["Ship Status"].isChecked():
             self.debug_log.setTextColor(self.log_colors["Ship Status"])
-            self.debug_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Command: {command} -> {result}")
+            self.debug_log.append(f"[{self.common_data['simulation']['sim_time']}] Command: {command} -> {result}")
         self.command_input.clear()
 
     def save_filter_settings(self):

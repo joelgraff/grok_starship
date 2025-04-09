@@ -11,3 +11,30 @@ Please provide:
 - A test plan to verify weapon effects and damage distribution.
 
 Assume integration with a simulation controller.
+
+**Engineering Module Context for Combat Development**
+
+The Engineering module (modules/engineering.py) is fully developed and integrated with the STAR SHIP simulation (PyQt5 GUI, PyGame graphics, 1 tick/second rate via SimulationController). It manages energy, shields, and propulsion, interfacing via common_data. Key details for Combat integration:
+
+- **Energy Management**:
+  - `common_data['engineering']['energy']` (current, e.g., 1200) and `['max_energy']` (default 2000, adjustable via `eng set_max_energy <amount>`).
+  - Regen: 5 units/second. Warp 9 costs 810 units/second (`factor**2 * 10`, capped at 1000).
+  - Combat should deduct energy for weapons (e.g., phasers) from `['energy']`, respecting `['allocations']['weapons']` (0-100%).
+
+- **Events**:
+  - **Power Surge**: 5% chance when total allocations > 95%, drops 50 energy, sets `common_data['engineering']['surge'] = True` (resets next tick). Logs “ENG: Power surge detected -50 energy” to `common_data['debug']`.
+    - Suggestion: In Combat, check `['surge']`—if True, 50% chance phaser fire misses (log “COM: Phaser misfire due to power surge”).
+  - **Shield Overload**: 10% chance when `['allocations']['shields'] > 80` and `['system_health']['shields'] < 20`, sets `['shields'] = 0`. Logs “ENG: Shield overload—resetting”.
+
+- **Status**:
+  - `get_status()` returns 11 pipe-delimited fields (e.g., "Energy: 1200/2000|Shields: 85.5%|...")—UI parses this in Column 1.
+
+- **Sim Time**:
+  - Uses `sim_time` from `update(sim_time=sim_time)` and `handle_command(command, sim_time)`—matches 1 tick/second, ready for custom clocks.
+
+**Combat Integration Goals**:
+- Deduct energy for weapon actions (e.g., phasers) from `common_data['engineering']['energy']`.
+- React to `['surge']` with a 50% miss chance—enhance with UI debug log in Column 3.
+- Consider shield interactions (e.g., damage reduces `['shields']`, triggers repairs via `common_data['crew_tasks']`).
+
+Engineering is paused—focus now on building Combat to sync with these mechanics!

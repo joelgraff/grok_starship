@@ -1,12 +1,12 @@
 # navigation.py
-import modules.module as m
+from modules.module import Module
 
-class Navigation(m.Module):
-    def __init__(self, ship):
+class Navigation(Module):
+    def __init__(self, ship, common_data=None):
         super().__init__(ship)
         self.name = "Navigation"
 
-    def update(self):
+    def update(self, sim_time=None):
         self.ship.position = (self.ship.position[0] + 1, self.ship.position[1])
 
     def get_status(self):
