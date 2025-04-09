@@ -8,7 +8,8 @@ class SimulationController:
             "nav": "navigation",
             "crew": "crew behavior",
             "deck": "deck layout",
-            "com": "combat",  # Added for Combat
+            "com": "combat",
+            "eng": "engineering",  # Added for Engineering
         }
 
     def add_module(self, module):
