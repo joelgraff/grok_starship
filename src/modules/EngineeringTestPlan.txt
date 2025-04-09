@@ -1,0 +1,79 @@
+Engineering Module Manual Testing Plan via Simulation UI
+
+Setup
+1. Launch the Simulation: Start your PyGame/PyQt application with the Engineering module integrated.
+2. Initial State: Confirm the starting values in the UI match the defaults:
+   - Energy: 1000/2000
+   - Shields: 100%
+   - Allocations: Shields 30%, Weapons 20%, Propulsion 40%, Reserve 10%
+   - Impulse Speed: 50%
+   - Warp Factor: 0
+   - System Health: All 100%
+3. Command Entry: Use the UI’s command input mechanism (e.g., text box or console) to send commands.
+
+Test Scenarios
+For each test, enter the command, observe the UI output (via get_status or displayed values), and check the debug log for expected messages. Run the simulation for a few ticks after each command to see update effects.
+
+1. Status Check
+   - Command: eng status
+   - Expected Output: A string like "Energy: 1000/2000|Shields: 100.0%|Alloc-Shields: 30%|..." reflecting the initial state.
+   - Purpose: Verify the status reporting and UI parsing.
+
+2. Boost Shields
+   - Command: eng boost_shields 50
+   - Expected Output: UI shows Shields allocation at 50%, total allocations still sum to 100% (e.g., Reserve decreases).
+   - Debug Log: "ENG: Shields boosted by 50%"
+   - Tick Check: Run a few ticks; Shields allocation remains 50%, energy regenerates +5/tick if below 2000.
+
+3. Reroute Power
+   - Command: eng reroute_power propulsion
+   - Expected Output: Propulsion allocation increases by 20% (to 60%), other allocations adjust proportionally.
+   - Debug Log: "ENG: Power rerouted to propulsion"
+   - Tick Check: Impulse speed increases to 100% (capped, since 60% * 2 > 100).
+
+4. Set Reserve
+   - Command: eng reserve 20
+   - Expected Output: Reserve allocation set to 20%, other allocations scale down to keep total at 100%.
+   - Debug Log: "ENG: Reserve set to 20%"
+
+5. Warp Engagement
+   - Command: eng warp 5
+   - Expected Output: Warp factor set to 5, impulse speed drops to 0.
+   - Debug Log: "ENG: Warp set to 5, cost 450 energy/tick"
+   - Tick Check: After 1 tick, energy decreases by 450 (to 550), warp_duration increases to 1. After ~2 ticks, ensure energy doesn’t go negative (warp disengages if insufficient).
+
+6. Repair System
+   - Setup: Manually reduce shields health (e.g., via a test command or event) to 50%.
+   - Command: eng repair shields
+   - Expected Output: Debug log shows "ENG: Repair task queued for shields"
+   - Tick Check: Shields health increases by 5% per tick until 100%, then task is removed from crew_tasks.
+
+7. Set Max Energy
+   - Command: eng set_max_energy 3000
+   - Expected Output: Max energy updates to 3000, current energy remains ≤ new max (e.g., still 1000 if unchanged).
+   - Debug Log: "ENG: Max energy set to 3000"
+   - Tick Check: Energy regenerates toward 3000 at +5/tick.
+
+8. Event Triggers
+   - Power Surge:
+     - Setup: Set energy to 1900+ (e.g., via a test command or waiting for regeneration).
+     - Action: Run multiple ticks.
+     - Expected Output: ~5% chance per tick of energy dropping by 50, debug log shows "ENG: Power surge detected -50 energy", surge flag toggles.
+   - Shield Overload:
+     - Setup: Set shields allocation >80%, health <20% (via test or damage simulation).
+     - Action: Run ticks.
+     - Expected Output: ~10% chance of shields dropping to 0, debug log shows "ENG: Shield overload—resetting".
+   - Propulsion Strain:
+     - Setup: Set warp to 8, run >10 ticks.
+     - Expected Output: ~5% chance of propulsion health dropping by 10, debug log shows "ENG: Propulsion strain—health reduced".
+
+Observations
+- UI Feedback: Ensure get_status updates reflect changes immediately after commands and ticks.
+- Debug Logs: Check common_data["debug"] (via UI or console) for timestamped messages matching expected events.
+- Consistency: Verify allocations always sum to 100%, energy stays within bounds, and health values cap at 100%.
+
+Tips for Testing
+- Simulation Speed: Adjust the tick rate in your UI (if possible) to slow down or speed up updates for easier observation.
+- Debug Window: If not already present, add a PyQt widget to display common_data["debug"] in real-time.
+- Manual Tweaks: Temporarily modify common_data (e.g., reduce energy or health) via a debug command to test edge cases.
+- Repeatability: For random events, run multiple ticks or temporarily increase probabilities (e.g., 50% instead of 5%) to force triggers.

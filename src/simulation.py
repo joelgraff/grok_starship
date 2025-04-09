@@ -58,12 +58,13 @@ class StarShipApp(QMainWindow):
         }
 
         # Initialize UI-related attributes
-        self.module_bars = {}  # Added to prevent attribute error
+        self.module_bars = {}  # Will be populated by setup_gui
+        self.module_labels = {}
 
-        # GUI setup
+        # GUI setup - Must run before timer
         setup_gui(self)
 
-        # Set up QTimer (1 tick/second) - Moved after GUI setup
+        # Set up QTimer (1 tick/second) - Start after GUI setup
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_simulation)
         self.timer.start(1000)
@@ -90,12 +91,45 @@ class StarShipApp(QMainWindow):
         self.ship_status_label.setText(f"Ship Status: {self.ship.status}")
         for module in self.controller.modules:
             status = module.get_status()
-            self.module_labels[module.name].setText(status)
-            if module.name == "Engineering" and "engineering" in self.module_bars:
-                eng_data = {k.split(': ')[0]: float(k.split(': ')[1].rstrip('%')) if '%' in k else k.split(': ')[1]
-                           for k in status.split('|')}
-                self.module_bars["engineering"]["energy"].setValue(int(eng_data["Energy"].split('/')[0]))
-                self.module_bars["engineering"]["shields"].setValue(int(eng_data["Shields"]))
+            if module.name == "Engineering":
+                eng_data = {k.split(': ')[0]: k.split(': ')[1] for k in status.split('|')}
+                labels = self.module_labels[module.name]  # List of labels
+                labels[0].setText(f"Energy: {eng_data['Energy']}")
+                labels[1].setText(f"Shields: {eng_data['Shields']}")
+                if "engineering" in self.module_bars:
+                    self.module_bars["engineering"]["energy"].setValue(int(eng_data["Energy"].split('/')[0]))
+                    self.module_bars["engineering"]["energy"].setCustomText(f"Energy: {eng_data['Energy']}")
+                    self.module_bars["engineering"]["shields"].setValue(int(float(eng_data["Shields"].rstrip('%'))))
+                    self.module_bars["engineering"]["shields"].setCustomText(f"Shields: {eng_data['Shields']}")
+                    alloc_shields_val = int(float(eng_data['Alloc-Shields'].rstrip('%')))
+                    self.module_bars["engineering"]["alloc_shields"].setValue(alloc_shields_val)
+                    self.module_bars["engineering"]["alloc_shields"].setCustomText(f"Shields Alloc: {alloc_shields_val}%")
+                    alloc_weapons_val = int(float(eng_data['Alloc-Weapons'].rstrip('%')))
+                    self.module_bars["engineering"]["alloc_weapons"].setValue(alloc_weapons_val)
+                    self.module_bars["engineering"]["alloc_weapons"].setCustomText(f"Weapons Alloc: {alloc_weapons_val}%")
+                    alloc_propulsion_val = int(float(eng_data['Alloc-Propulsion'].rstrip('%')))
+                    self.module_bars["engineering"]["alloc_propulsion"].setValue(alloc_propulsion_val)
+                    self.module_bars["engineering"]["alloc_propulsion"].setCustomText(f"Propulsion Alloc: {alloc_propulsion_val}%")
+                    alloc_reserve_val = int(float(eng_data['Alloc-Reserve'].rstrip('%')))
+                    self.module_bars["engineering"]["alloc_reserve"].setValue(alloc_reserve_val)
+                    self.module_bars["engineering"]["alloc_reserve"].setCustomText(f"Reserve Alloc: {alloc_reserve_val}%")
+                    impulse_val = int(float(eng_data['Impulse'].rstrip('%')))
+                    self.module_bars["engineering"]["impulse"].setValue(impulse_val)
+                    self.module_bars["engineering"]["impulse"].setCustomText(f"Impulse: {impulse_val}%")
+                    warp_val = int(float(eng_data['Warp']))
+                    self.module_bars["engineering"]["warp"].setValue(warp_val)
+                    self.module_bars["engineering"]["warp"].setCustomText(f"Warp: {warp_val}")
+                    health_shields_val = int(float(eng_data['Health-Shields'].rstrip('%')))
+                    self.module_bars["engineering"]["health_shields"].setValue(health_shields_val)
+                    self.module_bars["engineering"]["health_shields"].setCustomText(f"Shields Health: {health_shields_val}%")
+                    health_weapons_val = int(float(eng_data['Health-Weapons'].rstrip('%')))
+                    self.module_bars["engineering"]["health_weapons"].setValue(health_weapons_val)
+                    self.module_bars["engineering"]["health_weapons"].setCustomText(f"Weapons Health: {health_weapons_val}%")
+                    health_propulsion_val = int(float(eng_data['Health-Propulsion'].rstrip('%')))
+                    self.module_bars["engineering"]["health_propulsion"].setValue(health_propulsion_val)
+                    self.module_bars["engineering"]["health_propulsion"].setCustomText(f"Propulsion Health: {health_propulsion_val}%")
+            else:
+                self.module_labels[module.name].setText(status)
 
         # Update PyGame surfaces
         self.nav_widget.update_surface(self.ship.position, self.ship.targets)

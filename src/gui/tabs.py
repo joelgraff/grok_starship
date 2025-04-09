@@ -1,9 +1,10 @@
 # gui/tabs.py
 import json
 from datetime import datetime
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QTextEdit, QPushButton, QGridLayout
-from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QTextEdit, QPushButton, QGridLayout, QFrame
+from PyQt5.QtGui import QColor, QFont
 from .widgets import PygameWidget
+from .custom_progress import CustomProgressBar  # Clean import
 
 def setup_command_status_panel(app):
     panel = QWidget()
@@ -27,21 +28,170 @@ def setup_command_status_panel(app):
     status_layout.addWidget(ship_panel)
 
     app.module_labels = {}
+    app.module_bars = {}
+    font = QFont("Arial", 10)  # Font size for readability
     for module in app.controller.modules:
-        label = QLabel(module.get_status())
         module_panel = QWidget()
         color = app.log_colors[module.name].name()
         module_panel.setStyleSheet(f"background-color: {color}; color: white;")
         module_panel_layout = QVBoxLayout()
-        module_panel_layout.addWidget(label)
+        if module.name == "Engineering":
+            # Parse structured status
+            status = module.get_status()
+            eng_data = {k.split(': ')[0]: k.split(': ')[1] for k in status.split('|')}
+            # Energy
+            energy_label = QLabel(f"Energy: {eng_data['Energy']}")
+            energy_label.setFont(font)
+            energy_bar = CustomProgressBar()
+            energy_bar.setMaximum(app.common_data["engineering"]["max_energy"])
+            energy_bar.setValue(int(eng_data["Energy"].split('/')[0]))
+            energy_bar.setCustomText(f"Energy: {eng_data['Energy']}")
+            energy_bar.setFont(font)
+            # Shields
+            shields_label = QLabel(f"Shields: {eng_data['Shields']}")
+            shields_label.setFont(font)
+            shields_bar = CustomProgressBar()
+            shields_bar.setMaximum(100)
+            shields_bar.setValue(int(float(eng_data["Shields"].rstrip('%'))))
+            shields_bar.setCustomText(f"Shields: {eng_data['Shields']}")
+            shields_bar.setFont(font)
+            # Allocations group
+            alloc_separator = QFrame()
+            alloc_separator.setFrameShape(QFrame.HLine)
+            alloc_separator.setFrameShadow(QFrame.Sunken)
+            alloc_shields_bar = CustomProgressBar()
+            alloc_shields_bar.setMaximum(100)
+            alloc_shields_val = int(float(eng_data['Alloc-Shields'].rstrip('%')))
+            alloc_shields_bar.setValue(alloc_shields_val)
+            alloc_shields_bar.setCustomText(f"Shields Alloc: {alloc_shields_val}%")
+            alloc_shields_bar.setFont(font)
+            alloc_weapons_bar = CustomProgressBar()
+            alloc_weapons_bar.setMaximum(100)
+            alloc_weapons_val = int(float(eng_data['Alloc-Weapons'].rstrip('%')))
+            alloc_weapons_bar.setValue(alloc_weapons_val)
+            alloc_weapons_bar.setCustomText(f"Weapons Alloc: {alloc_weapons_val}%")
+            alloc_weapons_bar.setFont(font)
+            alloc_propulsion_bar = CustomProgressBar()
+            alloc_propulsion_bar.setMaximum(100)
+            alloc_propulsion_val = int(float(eng_data['Alloc-Propulsion'].rstrip('%')))
+            alloc_propulsion_bar.setValue(alloc_propulsion_val)
+            alloc_propulsion_bar.setCustomText(f"Propulsion Alloc: {alloc_propulsion_val}%")
+            alloc_propulsion_bar.setFont(font)
+            alloc_reserve_bar = CustomProgressBar()
+            alloc_reserve_bar.setMaximum(100)
+            alloc_reserve_val = int(float(eng_data['Alloc-Reserve'].rstrip('%')))
+            alloc_reserve_bar.setValue(alloc_reserve_val)
+            alloc_reserve_bar.setCustomText(f"Reserve Alloc: {alloc_reserve_val}%")
+            alloc_reserve_bar.setFont(font)
+            # Propulsion group (Impulse/Warp)
+            propulsion_separator = QFrame()
+            propulsion_separator.setFrameShape(QFrame.HLine)
+            propulsion_separator.setFrameShadow(QFrame.Sunken)
+            impulse_bar = CustomProgressBar()
+            impulse_bar.setMaximum(100)
+            impulse_val = int(float(eng_data['Impulse'].rstrip('%')))
+            impulse_bar.setValue(impulse_val)
+            impulse_bar.setCustomText(f"Impulse: {impulse_val}%")
+            impulse_bar.setFont(font)
+            impulse_bar.setStyleSheet("""
+                QProgressBar {
+                    border: 1px solid gray;
+                    background-color: #333333;
+                    color: white;
+                    text-align: center;
+                }
+                QProgressBar::chunk {
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 green, stop:1 yellow);
+                }
+            """)
+            warp_bar = CustomProgressBar()
+            warp_bar.setMaximum(10)
+            warp_val = int(float(eng_data['Warp']))
+            warp_bar.setValue(warp_val)
+            warp_bar.setCustomText(f"Warp: {warp_val}")
+            warp_bar.setFont(font)
+            warp_bar.setStyleSheet("""
+                QProgressBar {
+                    border: 1px solid gray;
+                    background-color: #333333;
+                    color: white;
+                    text-align: center;
+                }
+                QProgressBar::chunk {
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 blue, stop:1 red);
+                }
+            """)
+            # System Health group
+            health_separator = QFrame()
+            health_separator.setFrameShape(QFrame.HLine)
+            health_separator.setFrameShadow(QFrame.Sunken)
+            health_shields_bar = CustomProgressBar()
+            health_shields_bar.setMaximum(100)
+            health_shields_val = int(float(eng_data['Health-Shields'].rstrip('%')))
+            health_shields_bar.setValue(health_shields_val)
+            health_shields_bar.setCustomText(f"Shields Health: {health_shields_val}%")
+            health_shields_bar.setFont(font)
+            health_weapons_bar = CustomProgressBar()
+
+            health_weapons_bar.setMaximum(100)
+            health_weapons_val = int(float(eng_data['Health-Weapons'].rstrip('%')))
+            health_weapons_bar.setValue(health_weapons_val)
+            health_weapons_bar.setCustomText(f"Weapons Health: {health_weapons_val}%")
+            health_weapons_bar.setFont(font)
+            health_propulsion_bar = CustomProgressBar()
+            health_propulsion_bar.setMaximum(100)
+            health_propulsion_val = int(float(eng_data['Health-Propulsion'].rstrip('%')))
+            health_propulsion_bar.setValue(health_propulsion_val)
+            health_propulsion_bar.setCustomText(f"Propulsion Health: {health_propulsion_val}%")
+            health_propulsion_bar.setFont(font)
+            # Add to main layout
+            module_panel_layout.addWidget(energy_label)
+            module_panel_layout.addWidget(energy_bar)
+            module_panel_layout.addWidget(shields_label)
+            module_panel_layout.addWidget(shields_bar)
+            module_panel_layout.addWidget(alloc_separator)
+            module_panel_layout.addWidget(alloc_shields_bar)
+            module_panel_layout.addWidget(alloc_weapons_bar)
+            module_panel_layout.addWidget(alloc_propulsion_bar)
+            module_panel_layout.addWidget(alloc_reserve_bar)
+            module_panel_layout.addWidget(propulsion_separator)
+            module_panel_layout.addWidget(impulse_bar)
+            module_panel_layout.addWidget(warp_bar)
+            module_panel_layout.addWidget(health_separator)
+            module_panel_layout.addWidget(health_shields_bar)
+            module_panel_layout.addWidget(health_weapons_bar)
+            module_panel_layout.addWidget(health_propulsion_bar)
+            app.module_bars["engineering"] = {
+                "energy": energy_bar,
+                "shields": shields_bar,
+                "alloc_shields": alloc_shields_bar,
+                "alloc_weapons": alloc_weapons_bar,
+                "alloc_propulsion": alloc_propulsion_bar,
+                "alloc_reserve": alloc_reserve_bar,
+                "impulse": impulse_bar,
+                "warp": warp_bar,
+                "health_shields": health_shields_bar,
+                "health_weapons": health_weapons_bar,
+                "health_propulsion": health_propulsion_bar
+            }
+            app.module_labels[module.name] = [
+                energy_label, shields_label, None, None, None, None,  # None for allocation
+                None, None, None, None, None  # None for impulse, warp, health
+            ]
+        else:
+            label = QLabel(module.get_status())
+            label.setFont(font)
+            module_panel_layout.addWidget(label)
+            app.module_labels[module.name] = label
+
         module_panel.setLayout(module_panel_layout)
         status_layout.addWidget(module_panel)
-        app.module_labels[module.name] = label
 
     status_layout.addStretch()
     layout.addLayout(status_layout)
 
     panel.setLayout(layout)
+    panel.setMaximumWidth(300)
     return panel
 
 def setup_navigation_view_panel(app):
@@ -98,7 +248,7 @@ def setup_debug_log_panel(app):
 
     app.debug_log = QTextEdit()
     app.debug_log.setReadOnly(True)
-    app.debug_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Simulation initialized")
+    app.debug_log.append(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Simulation initialized")
     layout.addWidget(app.debug_log)
 
     clear_button = QPushButton("Clear Log")
@@ -130,7 +280,7 @@ def setup_gui(app):
     grid.addWidget(debug_panel, 0, 2, 2, 1)
 
     grid.setColumnStretch(0, 1)
-    grid.setColumnStretch(1, 3)
+    grid.setColumnStretch(1, 4)
     grid.setColumnStretch(2, 2)
 
     main_widget.setLayout(grid)
