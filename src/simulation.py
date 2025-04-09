@@ -11,14 +11,14 @@ from modules.navigation import Navigation
 from modules.crew_behavior import CrewBehavior
 from modules.deck_layout import DeckLayout
 from modules.combat import Combat
-from modules.engineering import Engineering  # New import
+from modules.engineering import Engineering
 from gui.tabs import setup_gui
 
 class StarShipApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("STAR SHIP Simulation")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 1200, 600)  # Increased width for better spacing
 
         # Initialize core components
         self.ship = Ship()
@@ -35,7 +35,7 @@ class StarShipApp(QMainWindow):
             "Crew Behavior": QColor("green"),
             "Deck Layout": QColor("purple"),
             "Combat": QColor("red"),
-            "Engineering": QColor("orange"),  # Added for Engineering
+            "Engineering": QColor("orange"),
         }
 
         # GUI setup
@@ -54,7 +54,7 @@ class StarShipApp(QMainWindow):
         self.controller.add_module(CrewBehavior(self.ship))
         self.controller.add_module(DeckLayout(self.ship))
         self.controller.add_module(Combat(self.ship))
-        self.controller.add_module(Engineering(self.ship))  # Add Engineering
+        self.controller.add_module(Engineering(self.ship))
 
     def update_simulation(self):
         self.controller.update()
@@ -67,7 +67,7 @@ class StarShipApp(QMainWindow):
         self.nav_widget.update_surface(self.ship.position, self.ship.targets)
         self.deck_widget.update_surface(deck_paths=self.ship.deck_paths)
 
-        # Log to debug tab with timestamps and colors
+        # Log to debug panel with timestamps and colors
         timestamp = datetime.now().strftime('%H:%M:%S')
         if self.log_filters["Ship Status"].isChecked():
             self.debug_log.setTextColor(self.log_colors["Ship Status"])
@@ -88,7 +88,7 @@ class StarShipApp(QMainWindow):
         self.command_input.clear()
 
     def save_filter_settings(self):
-        settings = {name: checkbox.isChecked() for name, checkbox in self.log_filters.items()}
+        settings = {name: button.isChecked() for name, button in self.log_filters.items()}
         with open("filter_settings.json", "w") as f:
             json.dump(settings, f)
 
@@ -100,5 +100,5 @@ class StarShipApp(QMainWindow):
                     if name in self.log_filters:
                         self.log_filters[name].setChecked(checked)
         except FileNotFoundError:
-            for checkbox in self.log_filters.values():
-                checkbox.setChecked(True)
+            for button in self.log_filters.values():
+                button.setChecked(True)
