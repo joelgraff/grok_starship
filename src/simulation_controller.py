@@ -21,12 +21,12 @@ class SimulationController:
 
     def start(self):
         self.running = True
-        self.common_data["debug"].append({"source": "sim", "msg": "Simulation started", 
+        self.common_data["debug"].append({"source": "sim", "msg": "Simulation started",
                                          "timestamp": self.common_data["simulation"]["sim_time"]})
 
     def stop(self):
         self.running = False
-        self.common_data["debug"].append({"source": "sim", "msg": "Simulation stopped", 
+        self.common_data["debug"].append({"source": "sim", "msg": "Simulation stopped",
                                          "timestamp": self.common_data["simulation"]["sim_time"]})
 
     def update(self):

@@ -28,7 +28,7 @@ class StarShipApp(QMainWindow):
             "simulation": {"tick_count": 0, "sim_time": self.start_time.strftime('%Y-%m-%d %H:%M:%S')},
             "engineering": {
                 "energy": 1000,
-                "max_energy": 2000,  # Updated to 2000 for testing per Engineering suggestion
+                "max_energy": 2000,
                 "allocations": {"shields": 30, "weapons": 20, "propulsion": 40, "reserve": 10},
                 "shields": 100,
                 "system_health": {"shields": 100, "weapons": 100, "propulsion": 100},
@@ -57,15 +57,19 @@ class StarShipApp(QMainWindow):
             "Engineering": QColor("orange"),
         }
 
+        # Initialize UI-related attributes
+        self.module_bars = {}  # Added to prevent attribute error
+
         # GUI setup
         setup_gui(self)
 
-        # Set up QTimer (1 tick/second)
+        # Set up QTimer (1 tick/second) - Moved after GUI setup
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_simulation)
-        self.timer.start(1000)  # 1 tick/second
-        self.common_data["debug"].append({"source": "sim", "msg": "Tick rate set to 1/second", 
+        self.timer.start(1000)
+        self.common_data["debug"].append({"source": "sim", "msg": "Tick rate set to 1/second",
                                          "timestamp": self.start_time.strftime('%Y-%m-%d %H:%M:%S')})
+
         # Start simulation
         self.controller.start()
 
@@ -79,7 +83,7 @@ class StarShipApp(QMainWindow):
     def update_simulation(self):
         self.tick_count += 1
         self.common_data["simulation"]["tick_count"] = self.tick_count
-        self.common_data["simulation"]["sim_time"] = (self.start_time + 
+        self.common_data["simulation"]["sim_time"] = (self.start_time +
             timedelta(seconds=self.tick_count)).strftime('%Y-%m-%d %H:%M:%S')
         self.controller.update()
         # Update GUI
@@ -88,15 +92,15 @@ class StarShipApp(QMainWindow):
             status = module.get_status()
             self.module_labels[module.name].setText(status)
             if module.name == "Engineering" and "engineering" in self.module_bars:
-                eng_data = {k.split(': ')[0]: float(k.split(': ')[1].rstrip('%')) if '%' in k else k.split(': ')[1] 
-                        for k in status.split('|')}
+                eng_data = {k.split(': ')[0]: float(k.split(': ')[1].rstrip('%')) if '%' in k else k.split(': ')[1]
+                           for k in status.split('|')}
                 self.module_bars["engineering"]["energy"].setValue(int(eng_data["Energy"].split('/')[0]))
-                self.module_bars["engineering"]["shields"].setValue(int(eng_data["Shields"]))  # Fix here
+                self.module_bars["engineering"]["shields"].setValue(int(eng_data["Shields"]))
 
         # Update PyGame surfaces
         self.nav_widget.update_surface(self.ship.position, self.ship.targets)
         self.deck_widget.update_surface(deck_paths=self.ship.deck_paths)
-        
+
         # Log to debug panel
         timestamp = self.common_data["simulation"]["sim_time"]
         if self.log_filters["Ship Status"].isChecked():

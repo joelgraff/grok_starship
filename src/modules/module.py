@@ -3,7 +3,7 @@ class Module:
     def __init__(self, ship, common_data=None):
         self.ship = ship
         self.name = "Unnamed Module"
-        self.common_data = common_data
+        self.common_data = common_data  # Optional, set by SimulationController
 
     def update(self, sim_time=None):
         pass

@@ -37,6 +37,9 @@ class PygameWidget(QWidget):
     def set_mode(self, mode):
         self.mode = mode
 
+    def set_mode(self, mode):
+        self.mode = mode
+
     def paintEvent(self, event):
         painter = QPainter(self)
         # Convert PyGame surface to QImage with proper format
