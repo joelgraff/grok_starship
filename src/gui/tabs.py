@@ -249,6 +249,7 @@ def setup_debug_log_panel(app):
     app.debug_log = QTextEdit()
     app.debug_log.setReadOnly(True)
     app.debug_log.append(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Simulation initialized")
+    app.debug_log.append(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Simulation initialized")
     layout.addWidget(app.debug_log)
 
     clear_button = QPushButton("Clear Log")
