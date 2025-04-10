@@ -1,7 +1,10 @@
 # simulation_controller.py
+from datetime import datetime
+
 class SimulationController:
-    def __init__(self, ship):
+    def __init__(self, ship, common_data):
         self.ship = ship
+        self.common_data = common_data
         self.modules = []
         self.running = False
         self.module_abbrevs = {
@@ -9,24 +12,28 @@ class SimulationController:
             "crew": "crew behavior",
             "deck": "deck layout",
             "com": "combat",
-            "eng": "engineering",  # Added for Engineering
+            "eng": "engineering",
         }
 
     def add_module(self, module):
+        module.common_data = self.common_data
         self.modules.append(module)
 
     def start(self):
         self.running = True
-        print("Simulation started")
+        self.common_data["debug"].append({"source": "sim", "msg": "Simulation started", 
+                                         "timestamp": self.common_data["simulation"]["sim_time"]})
 
     def stop(self):
         self.running = False
-        print("Simulation stopped")
+        self.common_data["debug"].append({"source": "sim", "msg": "Simulation stopped", 
+                                         "timestamp": self.common_data["simulation"]["sim_time"]})
 
     def update(self):
         if self.running:
+            sim_time = self.common_data["simulation"]["sim_time"]
             for module in self.modules:
-                module.update()
+                module.update(sim_time=sim_time)  # Pass sim_time to modules
             self.ship.update_status()
 
     def process_command(self, command):

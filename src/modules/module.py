@@ -1,17 +1,15 @@
 # module.py
 class Module:
-    def __init__(self, ship):
-        self.ship = ship  # Reference to shared data
-        self.name = "Generic Module"
+    def __init__(self, ship, common_data=None):
+        self.ship = ship
+        self.name = "Unnamed Module"
+        self.common_data = common_data
 
-    def update(self):
-        """Called by the controller each time step to update module state."""
+    def update(self, sim_time=None):
         pass
 
     def get_status(self):
-        """Returns a string summarizing the module's current state."""
         return f"{self.name}: Operational"
 
     def handle_command(self, command):
-        """Processes operator commands routed by the controller."""
         return f"{self.name} received command: {command}"

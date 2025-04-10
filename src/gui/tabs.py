@@ -1,7 +1,7 @@
 # gui/tabs.py
 import json
 from datetime import datetime
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QTextEdit, QPushButton, QGridLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QTextEdit, QPushButton, QGridLayout, QProgressBar
 from PyQt5.QtGui import QColor
 from .widgets import PygameWidget
 
@@ -27,13 +27,39 @@ def setup_command_status_panel(app):
     status_layout.addWidget(ship_panel)
     
     app.module_labels = {}
+    app.module_bars = {}
     for module in app.controller.modules:
         label = QLabel(module.get_status())
         module_panel = QWidget()
         color = app.log_colors[module.name].name()
         module_panel.setStyleSheet(f"background-color: {color}; color: white;")
         module_panel_layout = QVBoxLayout()
-        module_panel_layout.addWidget(label)
+        if module.name == "Engineering":
+            status = module.get_status()
+            eng_data = {k.split(': ')[0]: k.split(': ')[1] for k in status.split('|')}
+            energy_label = QLabel(f"Energy: {eng_data['Energy']}")
+            energy_bar = QProgressBar()
+            energy_bar.setMaximum(app.common_data["engineering"]["max_energy"])  # Dynamic max
+            energy_bar.setValue(int(eng_data["Energy"].split('/')[0]))
+            shields_label = QLabel(f"Shields: {eng_data['Shields']}")
+            shields_bar = QProgressBar()
+            shields_bar.setMaximum(100)
+            shields_bar.setValue(int(float(eng_data["Shields"].rstrip('%'))))
+            module_panel_layout.addWidget(energy_label)
+            module_panel_layout.addWidget(energy_bar)
+            module_panel_layout.addWidget(shields_label)
+            module_panel_layout.addWidget(shields_bar)
+            alloc_label = QLabel(f"Alloc: S:{eng_data['Alloc-Shields']} W:{eng_data['Alloc-Weapons']} "
+                                f"P:{eng_data['Alloc-Propulsion']} R:{eng_data['Alloc-Reserve']}")
+            module_panel_layout.addWidget(alloc_label)
+            prop_label = QLabel(f"Propulsion: I:{eng_data['Impulse']} W:{eng_data['Warp']}")
+            module_panel_layout.addWidget(prop_label)
+            health_label = QLabel(f"Health: S:{eng_data['Health-Shields']} W:{eng_data['Health-Weapons']} "
+                                 f"P:{eng_data['Health-Propulsion']}")
+            module_panel_layout.addWidget(health_label)
+            app.module_bars["engineering"] = {"energy": energy_bar, "shields": shields_bar}
+        else:
+            module_panel_layout.addWidget(label)
         module_panel.setLayout(module_panel_layout)
         status_layout.addWidget(module_panel)
         app.module_labels[module.name] = label
@@ -98,7 +124,7 @@ def setup_debug_log_panel(app):
     
     app.debug_log = QTextEdit()
     app.debug_log.setReadOnly(True)
-    app.debug_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Simulation initialized")
+    app.debug_log.append(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Simulation initialized")
     layout.addWidget(app.debug_log)
     
     clear_button = QPushButton("Clear Log")
