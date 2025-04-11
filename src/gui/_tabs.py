@@ -96,12 +96,12 @@ def setup_command_status_panel(app):
             impulse_bar.setStyleSheet("""
                 QProgressBar {
                     border: 1px solid gray;
-                    background-color: #333333;
+                    background-color: #444444;
                     color: white;
                     text-align: center;
                 }
                 QProgressBar::chunk {
-                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 green, stop:1 yellow);
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #006400, stop:1 #FFD700);
                 }
             """)
             warp_bar = CustomProgressBar()
@@ -113,7 +113,7 @@ def setup_command_status_panel(app):
             warp_bar.setStyleSheet("""
                 QProgressBar {
                     border: 1px solid gray;
-                    background-color: #333333;
+                    background-color: #444444;
                     color: white;
                     text-align: center;
                 }
@@ -132,7 +132,6 @@ def setup_command_status_panel(app):
             health_shields_bar.setCustomText(f"Shields Health: {health_shields_val}%")
             health_shields_bar.setFont(font)
             health_weapons_bar = CustomProgressBar()
-
             health_weapons_bar.setMaximum(100)
             health_weapons_val = int(float(eng_data['Health-Weapons'].rstrip('%')))
             health_weapons_bar.setValue(health_weapons_val)
@@ -144,6 +143,21 @@ def setup_command_status_panel(app):
             health_propulsion_bar.setValue(health_propulsion_val)
             health_propulsion_bar.setCustomText(f"Propulsion Health: {health_propulsion_val}%")
             health_propulsion_bar.setFont(font)
+            # Apply solid color to non-gradient bars
+            for bar in [energy_bar, shields_bar, alloc_shields_bar, alloc_weapons_bar,
+                        alloc_propulsion_bar, alloc_reserve_bar, health_shields_bar,
+                        health_weapons_bar, health_propulsion_bar]:
+                bar.setStyleSheet("""
+                    QProgressBar {
+                        border: 1px solid gray;
+                        background-color: #444444;
+                        color: white;
+                        text-align: center;
+                    }
+                    QProgressBar::chunk {
+                        background-color: #008080;
+                    }
+                """)
             # Add to main layout
             module_panel_layout.addWidget(energy_label)
             module_panel_layout.addWidget(energy_bar)
@@ -248,7 +262,6 @@ def setup_debug_log_panel(app):
 
     app.debug_log = QTextEdit()
     app.debug_log.setReadOnly(True)
-    app.debug_log.append(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Simulation initialized")
     app.debug_log.append(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Simulation initialized")
     layout.addWidget(app.debug_log)
 

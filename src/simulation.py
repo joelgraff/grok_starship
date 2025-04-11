@@ -1,4 +1,4 @@
-# simulation.py
+# src/simulation.py
 import json
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import QTimer
@@ -12,7 +12,7 @@ from modules.crew_behavior import CrewBehavior
 from modules.deck_layout import DeckLayout
 from modules.combat import Combat
 from modules.engineering import Engineering
-from gui.tabs import setup_gui
+from gui.layout import setup_gui  # Updated import
 
 class StarShipApp(QMainWindow):
     def __init__(self):

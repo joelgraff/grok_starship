@@ -8,6 +8,18 @@ class CustomProgressBar(QProgressBar):
         super().__init__(parent)
         self.custom_text = ""
         self.setTextVisible(False)  # Disable default text rendering
+        # Set default dark gray background for better text contrast
+        self.setStyleSheet("""
+            QProgressBar {
+                border: 1px solid gray;
+                background-color: #444444;
+                color: white;
+                text-align: center;
+            }
+            QProgressBar::chunk {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 green, stop:1 yellow);
+            }
+        """)
 
     def setCustomText(self, text):
         self.custom_text = text
