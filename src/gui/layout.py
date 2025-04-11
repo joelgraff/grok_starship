@@ -20,9 +20,11 @@ def setup_gui(app):
     debug_panel = setup_debug_log_panel(app)
     grid.addWidget(debug_panel, 0, 2, 2, 1)
 
-    grid.setColumnStretch(0, 1)
-    grid.setColumnStretch(1, 4)
-    grid.setColumnStretch(2, 2)
+    # Set fixed stretch factors to maintain column widths
+    grid.setColumnStretch(0, 1)  # Command/status column
+    grid.setColumnStretch(1, 4)  # Navigation/deck column
+    grid.setColumnStretch(2, 2)  # Debug column
+    grid.setColumnMinimumWidth(0, 300)  # Ensure command/status column stays fixed
 
     main_widget.setLayout(grid)
     app.setCentralWidget(main_widget)

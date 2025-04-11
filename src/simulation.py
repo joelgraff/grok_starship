@@ -12,23 +12,23 @@ from modules.crew_behavior import CrewBehavior
 from modules.deck_layout import DeckLayout
 from modules.combat import Combat
 from modules.engineering import Engineering
-from gui.layout import setup_gui  # Updated import
+from gui.layout import setup_gui
 
 class StarShipApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("STAR SHIP Simulation")
         self.setGeometry(100, 100, 1200, 600)
-
-        # Initialize core components
         self.ship = Ship()
-        self.start_time = datetime.now()  # Sim start time
+        self.start_time = datetime.now()
         self.tick_count = 0
         self.common_data = {
             "simulation": {"tick_count": 0, "sim_time": self.start_time.strftime('%Y-%m-%d %H:%M:%S')},
             "engineering": {
                 "energy": 1000,
                 "max_energy": 2000,
+                "warp_energy": 1500,
+                "max_warp_energy": 1500,
                 "allocations": {"shields": 30, "weapons": 20, "propulsion": 40, "reserve": 10},
                 "shields": 100,
                 "system_health": {"shields": 100, "weapons": 100, "propulsion": 100},
@@ -43,11 +43,7 @@ class StarShipApp(QMainWindow):
         self.ship.common_data = self.common_data
         self.controller = SimulationController(self.ship, self.common_data)
         self.setup_modules()
-
-        # PyGame clock
         self.clock = pygame.time.Clock()
-
-        # Color mapping for logs
         self.log_colors = {
             "Ship Status": QColor("black"),
             "Navigation": QColor("blue"),
@@ -56,22 +52,14 @@ class StarShipApp(QMainWindow):
             "Combat": QColor("red"),
             "Engineering": QColor("orange"),
         }
-
-        # Initialize UI-related attributes
-        self.module_bars = {}  # Will be populated by setup_gui
+        self.module_bars = {}
         self.module_labels = {}
-
-        # GUI setup - Must run before timer
         setup_gui(self)
-
-        # Set up QTimer (1 tick/second) - Start after GUI setup
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_simulation)
         self.timer.start(1000)
         self.common_data["debug"].append({"source": "sim", "msg": "Tick rate set to 1/second",
                                          "timestamp": self.start_time.strftime('%Y-%m-%d %H:%M:%S')})
-
-        # Start simulation
         self.controller.start()
 
     def setup_modules(self):
@@ -87,55 +75,53 @@ class StarShipApp(QMainWindow):
         self.common_data["simulation"]["sim_time"] = (self.start_time +
             timedelta(seconds=self.tick_count)).strftime('%Y-%m-%d %H:%M:%S')
         self.controller.update()
-        # Update GUI
         self.ship_status_label.setText(f"Ship Status: {self.ship.status}")
         for module in self.controller.modules:
             status = module.get_status()
             if module.name == "Engineering":
                 eng_data = {k.split(': ')[0]: k.split(': ')[1] for k in status.split('|')}
-                labels = self.module_labels[module.name]  # List of labels
-                labels[0].setText(f"Energy: {eng_data['Energy']}")
-                labels[1].setText(f"Shields: {eng_data['Shields']}")
                 if "engineering" in self.module_bars:
-                    self.module_bars["engineering"]["energy"].setValue(int(eng_data["Energy"].split('/')[0]))
-                    self.module_bars["engineering"]["energy"].setCustomText(f"Energy: {eng_data['Energy']}")
-                    self.module_bars["engineering"]["shields"].setValue(int(float(eng_data["Shields"].rstrip('%'))))
-                    self.module_bars["engineering"]["shields"].setCustomText(f"Shields: {eng_data['Shields']}")
+                    bars = self.module_bars["engineering"]
+                    bars["energy"].setValue(int(eng_data["Energy"].split('/')[0]))
+                    bars["energy"].setCustomText(f"Energy: {eng_data['Energy']}")
+                    bars["warp_energy"].setValue(int(eng_data["Warp Energy"].split('/')[0]))
+                    bars["warp_energy"].setMaximum(int(eng_data["Warp Energy"].split('/')[1]))
+                    bars["warp_energy"].setCustomText(f"Warp Energy: {eng_data['Warp Energy']}")
+                    bars["shields"].setValue(int(float(eng_data["Shields"].rstrip('%'))))
+                    bars["shields"].setCustomText(f"Shields: {eng_data['Shields']}")
                     alloc_shields_val = int(float(eng_data['Alloc-Shields'].rstrip('%')))
-                    self.module_bars["engineering"]["alloc_shields"].setValue(alloc_shields_val)
-                    self.module_bars["engineering"]["alloc_shields"].setCustomText(f"Shields Alloc: {alloc_shields_val}%")
+                    bars["alloc_shields"].setValue(alloc_shields_val)
+                    bars["alloc_shields"].setCustomText(f"Shields Alloc: {alloc_shields_val}%")
                     alloc_weapons_val = int(float(eng_data['Alloc-Weapons'].rstrip('%')))
-                    self.module_bars["engineering"]["alloc_weapons"].setValue(alloc_weapons_val)
-                    self.module_bars["engineering"]["alloc_weapons"].setCustomText(f"Weapons Alloc: {alloc_weapons_val}%")
+                    bars["alloc_weapons"].setValue(alloc_weapons_val)
+                    bars["alloc_weapons"].setCustomText(f"Weapons Alloc: {alloc_weapons_val}%")
                     alloc_propulsion_val = int(float(eng_data['Alloc-Propulsion'].rstrip('%')))
-                    self.module_bars["engineering"]["alloc_propulsion"].setValue(alloc_propulsion_val)
-                    self.module_bars["engineering"]["alloc_propulsion"].setCustomText(f"Propulsion Alloc: {alloc_propulsion_val}%")
+                    bars["alloc_propulsion"].setValue(alloc_propulsion_val)
+                    bars["alloc_propulsion"].setCustomText(f"Propulsion Alloc: {alloc_propulsion_val}%")
                     alloc_reserve_val = int(float(eng_data['Alloc-Reserve'].rstrip('%')))
-                    self.module_bars["engineering"]["alloc_reserve"].setValue(alloc_reserve_val)
-                    self.module_bars["engineering"]["alloc_reserve"].setCustomText(f"Reserve Alloc: {alloc_reserve_val}%")
+                    bars["alloc_reserve"].setValue(alloc_reserve_val)
+                    bars["alloc_reserve"].setCustomText(f"Reserve Alloc: {alloc_reserve_val}%")
                     impulse_val = int(float(eng_data['Impulse'].rstrip('%')))
-                    self.module_bars["engineering"]["impulse"].setValue(impulse_val)
-                    self.module_bars["engineering"]["impulse"].setCustomText(f"Impulse: {impulse_val}%")
+                    bars["impulse"].setValue(impulse_val)
+                    bars["impulse"].setCustomText(f"Impulse: {impulse_val}%")
                     warp_val = int(float(eng_data['Warp']))
-                    self.module_bars["engineering"]["warp"].setValue(warp_val)
-                    self.module_bars["engineering"]["warp"].setCustomText(f"Warp: {warp_val}")
+                    bars["warp"].setValue(warp_val)
+                    bars["warp"].setCustomText(f"Warp: {warp_val}")
                     health_shields_val = int(float(eng_data['Health-Shields'].rstrip('%')))
-                    self.module_bars["engineering"]["health_shields"].setValue(health_shields_val)
-                    self.module_bars["engineering"]["health_shields"].setCustomText(f"Shields Health: {health_shields_val}%")
+                    bars["health_shields"].setValue(health_shields_val)
+                    bars["health_shields"].setCustomText(f"Shields Health: {health_shields_val}%")
                     health_weapons_val = int(float(eng_data['Health-Weapons'].rstrip('%')))
-                    self.module_bars["engineering"]["health_weapons"].setValue(health_weapons_val)
-                    self.module_bars["engineering"]["health_weapons"].setCustomText(f"Weapons Health: {health_weapons_val}%")
+                    bars["health_weapons"].setValue(health_weapons_val)
+                    bars["health_weapons"].setCustomText(f"Weapons Health: {health_weapons_val}%")
                     health_propulsion_val = int(float(eng_data['Health-Propulsion'].rstrip('%')))
-                    self.module_bars["engineering"]["health_propulsion"].setValue(health_propulsion_val)
-                    self.module_bars["engineering"]["health_propulsion"].setCustomText(f"Propulsion Health: {health_propulsion_val}%")
+                    bars["health_propulsion"].setValue(health_propulsion_val)
+                    bars["health_propulsion"].setCustomText(f"Propulsion Health: {health_propulsion_val}%")
             else:
                 self.module_labels[module.name].setText(status)
 
-        # Update PyGame surfaces
         self.nav_widget.update_surface(self.ship.position, self.ship.targets)
         self.deck_widget.update_surface(deck_paths=self.ship.deck_paths)
 
-        # Log to debug panel
         timestamp = self.common_data["simulation"]["sim_time"]
         if self.log_filters["Ship Status"].isChecked():
             self.debug_log.setTextColor(self.log_colors["Ship Status"])
@@ -152,7 +138,6 @@ class StarShipApp(QMainWindow):
             if source in self.log_filters and self.log_filters[source].isChecked():
                 self.debug_log.setTextColor(self.log_colors.get(source, QColor("gray")))
                 self.debug_log.append(f"[{time}] {source.upper()}: {msg}")
-        # Prune debug log to last 100 entries
         if len(debug_entries) > 100:
             self.common_data["debug"] = debug_entries[-100:]
         else:

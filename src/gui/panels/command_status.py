@@ -1,6 +1,7 @@
 # src/gui/panels/command_status.py
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 from .engineering_status import setup_engineering_status
 
 def setup_command_status_panel(app):
@@ -13,6 +14,9 @@ def setup_command_status_panel(app):
     layout.addWidget(app.command_input)
 
     app.command_output = QLabel("Command output: None")
+    app.command_output.setWordWrap(True)  # Enable text wrapping
+    app.command_output.setAlignment(Qt.AlignTop)  # Align text to top
+    app.command_output.setFixedWidth(280)  # Constrain width to fit panel
     layout.addWidget(app.command_output)
 
     status_layout = QVBoxLayout()
@@ -46,5 +50,5 @@ def setup_command_status_panel(app):
     status_layout.addStretch()
     layout.addLayout(status_layout)
     panel.setLayout(layout)
-    panel.setMaximumWidth(300)
+    panel.setMaximumWidth(300)  # Fixed maximum width for the panel
     return panel

@@ -1,20 +1,21 @@
 # src/gui/panels/engineering_status.py
-from PyQt5.QtWidgets import QLabel, QFrame
+from PyQt5.QtWidgets import QFrame
 from PyQt5.QtGui import QFont
 from ..custom_progress import CustomProgressBar
 
 def setup_engineering_status(app, module, layout, font):
     status = module.get_status()
     eng_data = {k.split(': ')[0]: k.split(': ')[1] for k in status.split('|')}
-    energy_label = QLabel(f"Energy: {eng_data['Energy']}")
-    energy_label.setFont(font)
     energy_bar = CustomProgressBar()
     energy_bar.setMaximum(app.common_data["engineering"]["max_energy"])
     energy_bar.setValue(int(eng_data["Energy"].split('/')[0]))
     energy_bar.setCustomText(f"Energy: {eng_data['Energy']}")
     energy_bar.setFont(font)
-    shields_label = QLabel(f"Shields: {eng_data['Shields']}")
-    shields_label.setFont(font)
+    warp_energy_bar = CustomProgressBar()
+    warp_energy_bar.setMaximum(int(eng_data["Warp Energy"].split('/')[1]))
+    warp_energy_bar.setValue(int(eng_data["Warp Energy"].split('/')[0]))
+    warp_energy_bar.setCustomText(f"Warp Energy: {eng_data['Warp Energy']}")
+    warp_energy_bar.setFont(font)
     shields_bar = CustomProgressBar()
     shields_bar.setMaximum(100)
     shields_bar.setValue(int(float(eng_data["Shields"].rstrip('%'))))
@@ -105,7 +106,7 @@ def setup_engineering_status(app, module, layout, font):
     health_propulsion_bar.setValue(health_propulsion_val)
     health_propulsion_bar.setCustomText(f"Propulsion Health: {health_propulsion_val}%")
     health_propulsion_bar.setFont(font)
-    for bar in [energy_bar, shields_bar, alloc_shields_bar, alloc_weapons_bar,
+    for bar in [energy_bar, warp_energy_bar, shields_bar, alloc_shields_bar, alloc_weapons_bar,
                 alloc_propulsion_bar, alloc_reserve_bar, health_shields_bar,
                 health_weapons_bar, health_propulsion_bar]:
         bar.setStyleSheet("""
@@ -119,9 +120,8 @@ def setup_engineering_status(app, module, layout, font):
                 background-color: #008080;
             }
         """)
-    layout.addWidget(energy_label)
     layout.addWidget(energy_bar)
-    layout.addWidget(shields_label)
+    layout.addWidget(warp_energy_bar)
     layout.addWidget(shields_bar)
     layout.addWidget(alloc_separator)
     layout.addWidget(alloc_shields_bar)
@@ -137,6 +137,7 @@ def setup_engineering_status(app, module, layout, font):
     layout.addWidget(health_propulsion_bar)
     app.module_bars["engineering"] = {
         "energy": energy_bar,
+        "warp_energy": warp_energy_bar,
         "shields": shields_bar,
         "alloc_shields": alloc_shields_bar,
         "alloc_weapons": alloc_weapons_bar,
@@ -148,7 +149,4 @@ def setup_engineering_status(app, module, layout, font):
         "health_weapons": health_weapons_bar,
         "health_propulsion": health_propulsion_bar
     }
-    app.module_labels[module.name] = [
-        energy_label, shields_label, None, None, None, None,
-        None, None, None, None, None
-    ]
+    app.module_labels[module.name] = [None] * 11  # Empty list, no labels used

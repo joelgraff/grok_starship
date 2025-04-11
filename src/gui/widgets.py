@@ -1,4 +1,4 @@
-# gui/widgets.py
+# src/gui/widgets.py
 import pygame
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QImage, QPainter
@@ -6,9 +6,10 @@ from PyQt5.QtGui import QImage, QPainter
 class PygameWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setMinimumSize(600, 400)  # Match new size
+        self.app = parent  # Store the StarShipApp instance
+        self.setMinimumSize(600, 400)
         pygame.init()
-        self.surface = pygame.Surface((self.width(), self.height()), pygame.SRCALPHA)  # Use alpha for better compatibility
+        self.surface = pygame.Surface((self.width(), self.height()), pygame.SRCALPHA)
         self.surface.fill((255, 255, 255))  # White background
         self.mode = "navigation"
 
@@ -19,30 +20,29 @@ class PygameWidget(QWidget):
             ship_x = x * 20 + self.width() // 2
             ship_y = y * 20 + self.height() // 2
             pygame.draw.circle(self.surface, (0, 0, 255), (ship_x, ship_y), 10)
+            # Optional warp indicator
+            if self.app.common_data["engineering"]["warp_factor"] > 0:
+                pygame.draw.circle(self.surface, (0, 255, 255), (ship_x, ship_y), 15, 2)  # Cyan warp glow
             for target in targets:
                 tx, ty = target["position"]
                 target_x = tx * 20 + self.width() // 2
                 target_y = ty * 20 + self.height() // 2
                 pygame.draw.circle(self.surface, (255, 0, 0), (target_x, target_y), 8)
         elif self.mode == "deck" and deck_paths:
-            grid_size = self.height() // 5  # Fit height (400px)
+            grid_size = self.height() // 5
             for i in range(6):
-                pygame.draw.line(self.surface, (0, 0, 0), (0, i * grid_size), (self.width(), i * grid_size), 2)  # Rows
-                pygame.draw.line(self.surface, (0, 0, 0), (i * grid_size, 0), (i * grid_size, self.height()), 2)  # Cols
+                pygame.draw.line(self.surface, (0, 0, 0), (0, i * grid_size), (self.width(), i * grid_size), 2)
+                pygame.draw.line(self.surface, (0, 0, 0), (i * grid_size, 0), (i * grid_size, self.height()), 2)
             color = (0, 255, 0) if deck_paths["corridor_a"] == "open" else (255, 0, 0)
             pygame.draw.rect(self.surface, color, (grid_size, grid_size * 2, grid_size * 3, grid_size))
-            print(f"Deck View updated: corridor_a = {deck_paths['corridor_a']}")  # Debug
-        self.update()  # Trigger paintEvent
-
-    def set_mode(self, mode):
-        self.mode = mode
+            print(f"Deck View updated: corridor_a = {deck_paths['corridor_a']}")
+        self.update()
 
     def set_mode(self, mode):
         self.mode = mode
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        # Convert PyGame surface to QImage with proper format
         data = pygame.image.tostring(self.surface, "RGBA")
         image = QImage(data, self.width(), self.height(), QImage.Format_RGBA8888)
         painter.drawImage(0, 0, image)
