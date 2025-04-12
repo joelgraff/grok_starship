@@ -24,24 +24,27 @@ def setup_engineering_status(app, module, layout, font):
     alloc_separator = QFrame()
     alloc_separator.setFrameShape(QFrame.HLine)
     alloc_separator.setFrameShadow(QFrame.Sunken)
-    alloc_shields_bar = CustomProgressBar()
-    alloc_shields_bar.setMaximum(100)
-    alloc_shields_val = int(float(eng_data['Alloc-Shields'].rstrip('%')))
-    alloc_shields_bar.setValue(alloc_shields_val)
-    alloc_shields_bar.setCustomText(f"Shields Alloc: {alloc_shields_val}%")
-    alloc_shields_bar.setFont(font)
-    alloc_weapons_bar = CustomProgressBar()
-    alloc_weapons_bar.setMaximum(100)
-    alloc_weapons_val = int(float(eng_data['Alloc-Weapons'].rstrip('%')))
-    alloc_weapons_bar.setValue(alloc_weapons_val)
-    alloc_weapons_bar.setCustomText(f"Weapons Alloc: {alloc_weapons_val}%")
-    alloc_weapons_bar.setFont(font)
-    alloc_propulsion_bar = CustomProgressBar()
-    alloc_propulsion_bar.setMaximum(100)
-    alloc_propulsion_val = int(float(eng_data['Alloc-Propulsion'].rstrip('%')))
-    alloc_propulsion_bar.setValue(alloc_propulsion_val)
-    alloc_propulsion_bar.setCustomText(f"Propulsion Alloc: {alloc_propulsion_val}%")
-    alloc_propulsion_bar.setFont(font)
+    health_shields_bar = CustomProgressBar()
+    health_shields_bar.setMaximum(100)
+    health_shields_val = int(float(eng_data['Health-Shields'].rstrip('%')))
+    health_shields_bar.setValue(health_shields_val)
+    health_shields_bar.setCustomText(f"Shields Health: {health_shields_val}%")
+    health_shields_bar.setFont(font)
+    health_shields_bar.setMarkerPosition(int(float(eng_data['Alloc-Shields'].rstrip('%'))))  # Marker for allocation
+    health_weapons_bar = CustomProgressBar()
+    health_weapons_bar.setMaximum(100)
+    health_weapons_val = int(float(eng_data['Health-Weapons'].rstrip('%')))
+    health_weapons_bar.setValue(health_weapons_val)
+    health_weapons_bar.setCustomText(f"Weapons Health: {health_weapons_val}%")
+    health_weapons_bar.setFont(font)
+    health_weapons_bar.setMarkerPosition(int(float(eng_data['Alloc-Weapons'].rstrip('%'))))  # Marker for allocation
+    health_propulsion_bar = CustomProgressBar()
+    health_propulsion_bar.setMaximum(100)
+    health_propulsion_val = int(float(eng_data['Health-Propulsion'].rstrip('%')))
+    health_propulsion_bar.setValue(health_propulsion_val)
+    health_propulsion_bar.setCustomText(f"Propulsion Health: {health_propulsion_val}%")
+    health_propulsion_bar.setFont(font)
+    health_propulsion_bar.setMarkerPosition(int(float(eng_data['Alloc-Propulsion'].rstrip('%'))))  # Marker for allocation
     alloc_reserve_bar = CustomProgressBar()
     alloc_reserve_bar.setMaximum(100)
     alloc_reserve_val = int(float(eng_data['Alloc-Reserve'].rstrip('%')))
@@ -88,27 +91,8 @@ def setup_engineering_status(app, module, layout, font):
     health_separator = QFrame()
     health_separator.setFrameShape(QFrame.HLine)
     health_separator.setFrameShadow(QFrame.Sunken)
-    health_shields_bar = CustomProgressBar()
-    health_shields_bar.setMaximum(100)
-    health_shields_val = int(float(eng_data['Health-Shields'].rstrip('%')))
-    health_shields_bar.setValue(health_shields_val)
-    health_shields_bar.setCustomText(f"Shields Health: {health_shields_val}%")
-    health_shields_bar.setFont(font)
-    health_weapons_bar = CustomProgressBar()
-    health_weapons_bar.setMaximum(100)
-    health_weapons_val = int(float(eng_data['Health-Weapons'].rstrip('%')))
-    health_weapons_bar.setValue(health_weapons_val)
-    health_weapons_bar.setCustomText(f"Weapons Health: {health_weapons_val}%")
-    health_weapons_bar.setFont(font)
-    health_propulsion_bar = CustomProgressBar()
-    health_propulsion_bar.setMaximum(100)
-    health_propulsion_val = int(float(eng_data['Health-Propulsion'].rstrip('%')))
-    health_propulsion_bar.setValue(health_propulsion_val)
-    health_propulsion_bar.setCustomText(f"Propulsion Health: {health_propulsion_val}%")
-    health_propulsion_bar.setFont(font)
-    for bar in [energy_bar, warp_energy_bar, shields_bar, alloc_shields_bar, alloc_weapons_bar,
-                alloc_propulsion_bar, alloc_reserve_bar, health_shields_bar,
-                health_weapons_bar, health_propulsion_bar]:
+    for bar in [energy_bar, warp_energy_bar, shields_bar, alloc_reserve_bar,
+                health_shields_bar, health_weapons_bar, health_propulsion_bar]:
         bar.setStyleSheet("""
             QProgressBar {
                 border: 1px solid gray;
@@ -124,29 +108,23 @@ def setup_engineering_status(app, module, layout, font):
     layout.addWidget(warp_energy_bar)
     layout.addWidget(shields_bar)
     layout.addWidget(alloc_separator)
-    layout.addWidget(alloc_shields_bar)
-    layout.addWidget(alloc_weapons_bar)
-    layout.addWidget(alloc_propulsion_bar)
+    layout.addWidget(health_shields_bar)
+    layout.addWidget(health_weapons_bar)
+    layout.addWidget(health_propulsion_bar)
     layout.addWidget(alloc_reserve_bar)
     layout.addWidget(propulsion_separator)
     layout.addWidget(impulse_bar)
     layout.addWidget(warp_bar)
     layout.addWidget(health_separator)
-    layout.addWidget(health_shields_bar)
-    layout.addWidget(health_weapons_bar)
-    layout.addWidget(health_propulsion_bar)
     app.module_bars["engineering"] = {
         "energy": energy_bar,
         "warp_energy": warp_energy_bar,
         "shields": shields_bar,
-        "alloc_shields": alloc_shields_bar,
-        "alloc_weapons": alloc_weapons_bar,
-        "alloc_propulsion": alloc_propulsion_bar,
-        "alloc_reserve": alloc_reserve_bar,
-        "impulse": impulse_bar,
-        "warp": warp_bar,
         "health_shields": health_shields_bar,
         "health_weapons": health_weapons_bar,
-        "health_propulsion": health_propulsion_bar
+        "health_propulsion": health_propulsion_bar,
+        "alloc_reserve": alloc_reserve_bar,
+        "impulse": impulse_bar,
+        "warp": warp_bar
     }
-    app.module_labels[module.name] = [None] * 11  # Empty list, no labels used
+    app.module_labels[module.name] = [None] * 11

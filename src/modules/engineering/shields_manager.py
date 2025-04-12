@@ -1,3 +1,5 @@
+import random
+
 class ShieldsManager:
     """Manages shields, including regeneration and overload events."""
     def __init__(self, common_data):

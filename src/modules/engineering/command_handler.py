@@ -96,6 +96,17 @@ class CommandHandler:
             except ValueError:
                 return "Invalid amount. Use: eng refuel_warp <number>"
 
+        elif cmd == "set_shield_health" and len(parts) > 1:
+            try:
+                amount = int(parts[1])
+                if 0 <= amount <= 100:
+                    eng["system_health"]["shields"] = amount
+                    self.common_data["debug"].append({"timestamp": sim_time,
+                                                    "message": f"ENG: Shield health set to {amount}%"})
+                    return f"Shield health set to {amount}%"
+                return "Health must be between 0 and 100."
+            except ValueError:
+                return "Invalid amount. Use: eng set_shield_health <number>"
         return "Unknown command."
 
     def adjust_allocation(self, system, amount):

@@ -1,37 +1,57 @@
-# custom_progress.py
+# src/gui/custom_progress.py
 from PyQt5.QtWidgets import QProgressBar
-from PyQt5.QtGui import QPainter, QFont
+from PyQt5.QtGui import QPainter, QPen
 from PyQt5.QtCore import Qt
+import logging
+
+# Set up logging to file for silent crash debugging
+logging.basicConfig(filename="custom_progress.log", level=logging.DEBUG, 
+                    format="%(asctime)s:%(levelname)s:%(message)s")
 
 class CustomProgressBar(QProgressBar):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.custom_text = ""
-        self.setTextVisible(False)  # Disable default text rendering
-        # Set default dark gray background for better text contrast
-        self.setStyleSheet("""
-            QProgressBar {
-                border: 1px solid gray;
-                background-color: #444444;
-                color: white;
-                text-align: center;
-            }
-            QProgressBar::chunk {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 green, stop:1 yellow);
-            }
-        """)
+        self.marker_position = None
+        self.setFormat("")  # Disable default percentage text
+        logging.debug("CustomProgressBar initialized")
 
     def setCustomText(self, text):
         self.custom_text = text
         self.update()
+        logging.debug(f"Set custom text: {text}")
+
+    def setMarkerPosition(self, percentage):
+        self.marker_position = percentage
+        self.update()
+        logging.debug(f"Set marker position: {percentage}")
 
     def paintEvent(self, event):
+        logging.debug("Starting paintEvent")
+        # Draw base progress bar
         super().paintEvent(event)
+        
+        # Create painter for custom rendering
         painter = QPainter(self)
-        painter.setFont(self.font())
-        painter.setPen(Qt.white)  # White text for contrast
-        # Center text within the bar
-        text_rect = painter.fontMetrics().boundingRect(self.custom_text)
-        x = (self.width() - text_rect.width()) // 2
-        y = (self.height() + text_rect.height() // 2) // 2
-        painter.drawText(x, y, self.custom_text)
+        painter.setRenderHint(QPainter.Antialiasing)
+        logging.debug("Painter created")
+
+        # Draw custom text
+        if self.custom_text:
+            font = painter.font()
+            font.setPointSize(10)
+            painter.setFont(font)
+            painter.setPen(Qt.white)
+            rect = self.rect()
+            painter.drawText(rect, Qt.AlignCenter, self.custom_text)
+            logging.debug(f"Drew text: {self.custom_text}")
+
+        # Draw marker if set
+        if self.marker_position is not None:
+            marker_x = (self.marker_position / 100.0) * self.width()
+            painter.setPen(QPen(Qt.white, 2))
+            painter.drawLine(int(marker_x), 0, int(marker_x), self.height())
+            logging.debug(f"Drew marker at: {marker_x}")
+
+        painter.end()  # Explicitly end painter
+        logging.debug("paintEvent completed")
