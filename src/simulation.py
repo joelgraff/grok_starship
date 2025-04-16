@@ -8,7 +8,7 @@ import pygame
 from ship import Ship
 from simulation_controller import SimulationController
 from modules.navigation import Navigation
-from modules.crew_behavior import CrewBehavior
+from modules.crew import CrewBehavior
 from modules.deck_layout import DeckLayout
 from modules.combat import Combat
 from modules.engineering import Engineering
