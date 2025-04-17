@@ -1,6 +1,6 @@
 # modules/deck_layout.py
 import random
-from modules.module import Module
+from module import Module
 
 class DeckLayout(Module):
     def __init__(self, ship, common_data=None):

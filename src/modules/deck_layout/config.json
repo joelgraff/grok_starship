@@ -1,0 +1,33 @@
+{
+    "grid_size": {
+      "width": 192,
+      "height": 192
+    },
+    "hull_shape": {
+      "hull_type": "Enterprise",
+      "semi_axis_ratio": 1.5,
+      "core_size": 0.1,
+      "secondary_size": 0.6,
+      "aspect_ratio": 2.0,
+      "corner_radius": 0.1,
+      "num_modules": 4,
+      "module_types": ["ellipse", "rectangle"],
+      "neck_width": 0.05
+    },
+    "corridor_config": {
+      "min_corridor_width": 4,
+      "door_to_area_threshold": 0.05
+    },
+    "pathfinding": {
+      "heuristic": "euclidean",
+      "path_smoothing": false
+    },
+    "room_types": {
+      "large": ["Engineering", "Shuttle Bay", "Medical Bay", "Bridge"],
+      "small": ["Crew Quarters", "Science Lab", "Recreation", "Storage", "Transporter"]
+    },
+    "rendering": {
+      "cell_size_layout": 5,
+      "cell_size_map": 3
+    }
+  }
